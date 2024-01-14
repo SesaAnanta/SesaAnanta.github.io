@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>linux的基本操作 | SesaAnanta</title><meta name="author" content="Sesa·Ananta"><meta name="copyright" content="Sesa·Ananta"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Linux系统使用注意1、Linux严格区分大小写123Linux 和Windows不同，Linux严格区分大小写的，包括文件名和目录名、命令、命令选项、配置文件设置选项等。例如，Win7 系统桌面上有文件夹叫做Test，当我们在桌面上再新建一个名为 test 的文件夹时，系统会提示文件夹命名冲突；  Windows演示：  Linux演示：  由以上图解可知：Linux是一个非常严谨的操作系统，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux的基本操作">
+<meta property="og:url" content="http://example.com/2023/12/22/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="SesaAnanta">
+<meta property="og:description" content="Linux系统使用注意1、Linux严格区分大小写123Linux 和Windows不同，Linux严格区分大小写的，包括文件名和目录名、命令、命令选项、配置文件设置选项等。例如，Win7 系统桌面上有文件夹叫做Test，当我们在桌面上再新建一个名为 test 的文件夹时，系统会提示文件夹命名冲突；  Windows演示：  Linux演示：  由以上图解可知：Linux是一个非常严谨的操作系统，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2023-12-22T10:48:12.000Z">
+<meta property="article:modified_time" content="2023-12-23T01:44:12.705Z">
+<meta property="article:author" content="Sesa·Ananta">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2023/12/22/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'linux的基本操作',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-23 09:44:12'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">71</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="SesaAnanta"><span class="site-name">SesaAnanta</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">linux的基本操作</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-12-22T10:48:12.000Z" title="发表于 2023-12-22 18:48:12">2023-12-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-12-23T01:44:12.705Z" title="更新于 2023-12-23 09:44:12">2023-12-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/linux/">linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="linux的基本操作"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="Linux系统使用注意"><a href="#Linux系统使用注意" class="headerlink" title="Linux系统使用注意"></a>Linux系统使用注意</h1><h2 id="1、Linux严格区分大小写"><a href="#1、Linux严格区分大小写" class="headerlink" title="1、Linux严格区分大小写"></a>1、Linux严格区分大小写</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Linux 和Windows不同，Linux严格区分大小写的，包括文件名和目录名、命令、命令选项、配置文件设置选项等。</span><br><span class="line"></span><br><span class="line">例如，Win7 系统桌面上有文件夹叫做Test，当我们在桌面上再新建一个名为 test 的文件夹时，系统会提示文件夹命名冲突；</span><br></pre></td></tr></table></figure>
+
+<p>Windows演示：</p>
+<p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312104935449.png" alt="image-20200312104935449"></p>
+<p>Linux演示：</p>
+<p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312105002814.png" alt="image-20200312105002814"></p>
+<p>由以上图解可知：Linux是一个非常严谨的操作系统，严格区分大小写。</p>
+<h2 id="2、Linux文件”扩展名”"><a href="#2、Linux文件”扩展名”" class="headerlink" title="2、Linux文件”扩展名”"></a>2、Linux文件”扩展名”</h2><blockquote>
+<p>在Linux操作系统中，与Windows不同，其文件的类型不是通过扩展名来进行区分的！</p>
+</blockquote>
+<p>我们都知道，Windows 是依赖扩展名区分文件类型的，比如，”.txt” 是文本文件、”.exe” 是执行文件，但 Linux 不是。</p>
+<p> Linux 系统通过&#x3D;&#x3D;权限位标识&#x3D;&#x3D;来确定文件类型，常见的文件类型有普通文件、目录、链接文件、块设备文件、字符设备文件等几种。Linux 的可执行文件就是普通文件被赋予了可执行权限。</p>
+<p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312105800243.png" alt="image-20200312105800243"></p>
+<p>Linux系统中常见的后缀名称：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Linux 中的一些特殊文件还是要求写 <span class="string">&quot;扩展名&quot;</span> 的，但 Linux 不依赖扩展名来识别文件类型，写这些扩展名是为了帮助运维人员来区分不同的文件类型。</span><br><span class="line"></span><br><span class="line">这样的文件扩展名主要有以下几种：</span><br><span class="line">压缩包：Linux 下常见的压缩文件名有 *.gz、*.bz2、*.zip、*.tar.gz、*.tar.bz2、*.tgz 等。</span><br><span class="line"></span><br><span class="line">为什么压缩包一定要写扩展名呢？很简单，如果不写清楚扩展名，那么管理员不容易判断压缩包的格式，虽然有命令可以帮助判断，但是直观一点更加方便。就算没写扩展名，在 Linux 中一样可以解压缩，不影响使用。</span><br><span class="line"></span><br><span class="line">二进制软件包：CentOS 中所使用的二进制安装包是 RPM 包，所有的 RPM 包都用<span class="string">&quot;.rpm&quot;</span>扩展名结尾，目的同样是让管理员一目了然。=&gt; 类似Windows中的exe文件</span><br><span class="line"></span><br><span class="line">程序文件：Shell 脚本一般用 <span class="string">&quot;.sh&quot;</span> 扩展名结尾。=&gt; check_network.sh</span><br><span class="line"></span><br><span class="line">网页文件：网页文件一般使用 <span class="string">&quot;.php&quot;</span> 等结尾，不过这是网页服务器的要求，而不是 Linux 的要求。</span><br><span class="line">.html/.css/.js/.jsp/.php/.py =&gt; 网页文件</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>① Linux操作系统不以“扩展名”来判断文件的类型，而是通过权限位标识符来进行判断</p>
+</blockquote>
+<blockquote>
+<p>② 有一些特殊的文件，有扩展名称&#x3D;&gt;压缩包、二进制软件包、程序文件、网页文件</p>
+</blockquote>
+<h2 id="3、Linux中所有内容以文件形式保存"><a href="#3、Linux中所有内容以文件形式保存" class="headerlink" title="3、Linux中所有内容以文件形式保存"></a>3、Linux中所有内容以文件形式保存</h2><p>在Linux系统中，一切皆文件！</p>
+<blockquote>
+<p>在Windows是文件的，在Linux下也是文件。在Windows中不是文件的，在Linux系统中也是文件。</p>
+</blockquote>
+<p>问题：我们目前还没有学习权限标识符，怎么判断文件的类型呢？</p>
+<p>答：可以通过文件的颜色</p>
+<p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312113307247.png" alt="image-20200312113307247"></p>
+<p>然后使用ls命令，查看文件的颜色</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls</span></span><br><span class="line">l : L的小写形式</span><br></pre></td></tr></table></figure>
+
+<p>普通文件：通过ls命令查看时，如果显示<font color="red">黑色</font>，代表其是一个普通的文件</p>
+<p>文件夹：通过ls命令查看时，如果显示<font color="red">天蓝色</font>，代表是一个文件夹</p>
+<h2 id="4、Linux中存储设备都必须在挂载之后才能使用"><a href="#4、Linux中存储设备都必须在挂载之后才能使用" class="headerlink" title="4、Linux中存储设备都必须在挂载之后才能使用"></a>4、Linux中存储设备都必须在挂载之后才能使用</h2><p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312114423821.png" alt="image-20200312114423821"></p>
+<p>Windows：分区+格式化</p>
+<p>Linux操作系统：分区+格式化+挂载，存储设备必须挂载后才能使用（硬盘、光盘、U盘）</p>
+<blockquote>
+<p>mount命令： mount   空格   &#x2F;dev&#x2F;sda1  空格  &#x2F;mnt&#x2F;file</p>
+</blockquote>
+<h1 id="Linux系统的目录结构（重要）"><a href="#Linux系统的目录结构（重要）" class="headerlink" title="Linux系统的目录结构（重要）"></a>Linux系统的目录结构（重要）</h1><h2 id="1、Linux分区与Windows分区"><a href="#1、Linux分区与Windows分区" class="headerlink" title="1、Linux分区与Windows分区"></a>1、Linux分区与Windows分区</h2><p>Linux 系统不同于 Windows，没有 C 盘、D 盘、E 盘那么多的盘符，只有一个&#x3D;&#x3D;根目录（&#x2F;）&#x3D;&#x3D;，所有的文件（资源）都存储在以&#x3D;&#x3D;根目录（&#x2F;）&#x3D;&#x3D;为树根的&#x3D;&#x3D;树形&#x3D;&#x3D;目录结构中。</p>
+<p>Windows：</p>
+<p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312115814989.png" alt="image-20200312115814989"></p>
+<p>Linux：</p>
+<p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312115750006.png" alt="image-20200312115750006"></p>
+<h2 id="2、Linux系统文件架构"><a href="#2、Linux系统文件架构" class="headerlink" title="2、Linux系统文件架构"></a>2、Linux系统文件架构</h2><p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312115851811.png" alt="image-20200312115851811"></p>
+<p> 在 Linux 根目录（&#x2F;）下包含很多的子目录，称为一级目录。<br>例如 bin、boot、dev 等。</p>
+<p>同时，各一级目录下还含有很多子目录，称为二级目录。<br>例如 &#x2F;bin&#x2F;bash、&#x2F;bin&#x2F;ed 等。</p>
+<h2 id="3、Linux系统的文件目录用途"><a href="#3、Linux系统的文件目录用途" class="headerlink" title="3、Linux系统的文件目录用途"></a>3、Linux系统的文件目录用途</h2><p>&#x2F;bin：系统命令目录</p>
+<p>&#x2F;sbin：超级命令目录，只能超级管理员可以执行的命令</p>
+<p>&#x2F;boot：系统目录，类似于Windows中的C盘</p>
+<p>&#x2F;dev ：设备文件目录，硬盘、光驱、U盘都属于设备文件，&#x2F;dev&#x2F;sr0代表光驱设备。注意，次目录下的文件没有办法直接使用，必须先挂载</p>
+<p>&#x2F;etc ：非常重要，代表系统的配置文件目录。大部分软件安装完成后，其配置文件都存放在此目录</p>
+<p>&#x2F;home：普通用户的家目录，用户登录后会自动切换到此目录</p>
+<p>&#x2F;root：超级管理员的家目录，超级管理员登录后会自动切换到此目录</p>
+<p>&#x2F;media：挂载目录，早期Linux挂载目录，用于挂载光盘以及软盘</p>
+<p>&#x2F;mnt：挂载目录，用来挂载额外的设备，如 U 盘、移动硬盘和其他操作系统的分区</p>
+<p>&#x2F;opt ：第三方软件目录，这个目录是放置和安装其他软件的位置，手工安装的源码包软件都可以安装到这个目录中。不过笔者还是习惯把软件放到 &#x2F;usr&#x2F;local&#x2F; 目录中，也就是说，&#x2F;usr&#x2F;local&#x2F; 目录也可以用来安装软件</p>
+<p>&#x2F;usr ：系统程序目录，类似Windows中的Program Files</p>
+<p>&#x2F;proc：虚拟文件系统。该目录中的数据并不保存在硬盘上，而是保存到内存中。主要保存系统的内核、进程、外部设备状态和网络状态等。</p>
+<p>&#x2F;tmp ：临时文件目录，在该目录下，所有用户都可以访问和写入。建议此目录中不能保存重要数据，最好每次开机都把该目录清理</p>
+<p>&#x2F;var ：经常变化的文件目录，网页文件、数据文件、日志文件</p>
+<h1 id="Linux入门级命令"><a href="#Linux入门级命令" class="headerlink" title="Linux入门级命令"></a>Linux入门级命令</h1><h2 id="1、开启终端"><a href="#1、开启终端" class="headerlink" title="1、开启终端"></a>1、开启终端</h2><p>问题：什么是终端（Terminal）</p>
+<p>答：Linux操作系统中用于输入命令的地方</p>
+<p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312145513405.png" alt="image-20200312145513405"></p>
+<p>打开后，效果如下图所示：</p>
+<p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312145943049.png" alt="image-20200312145943049"></p>
+<h2 id="2、Linux命令格式"><a href="#2、Linux命令格式" class="headerlink" title="2、Linux命令格式"></a>2、Linux命令格式</h2><p>什么是Linux 的命令？</p>
+<p>答：就是指在Linux 终端（命令行）中输入的内容就称之为命令。</p>
+<p>一个完整的命令的标准格式：Linux 通用的格式</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 命令（空格） [选项]（空格）[参数]</span></span><br></pre></td></tr></table></figure>
+
+<p>但是有些命令比较特殊，可能没有选项也没有参数</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pwd</span></span><br></pre></td></tr></table></figure>
+
+<p>还有一些命令，有命令有选项，但是没有参数</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls -l</span></span><br></pre></td></tr></table></figure>
+
+<p>还有一些命令，命令+选项+参数全都有</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tail -n 3 readme.txt</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3、扩展：Linux下的命令补全"><a href="#3、扩展：Linux下的命令补全" class="headerlink" title="3、扩展：Linux下的命令补全"></a>3、扩展：Linux下的命令补全</h2><p>键盘上有一个按键：Tab键</p>
+<p><img src="/../assets/blog_res/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C.assets/image-20200312151903965.png" alt="image-20200312151903965"></p>
+<p>当我们在Linux系统的终端中，输入命令时，可以无需完整的命令，只需要记住命令的前几个字母即可，然后按Tab键，系统会自动进行补全操作。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># syst + Tab键</span></span><br><span class="line"><span class="comment"># systemc + Tab键</span></span><br><span class="line"><span class="comment"># systemctl</span></span><br></pre></td></tr></table></figure>
+
+<p>有些命令可能都以某几个字母开头，这个时候，只需要按两次Tab键，其就会显示所有命令。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># clea + Tab键 + Tab键</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Tab键的功能特别强大：其不仅可以补全命令还可以补全Linux的文件路径</p>
+</blockquote>
+<h2 id="4、切换用户"><a href="#4、切换用户" class="headerlink" title="4、切换用户"></a>4、切换用户</h2><p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># su - root</span></span><br><span class="line">Password:<span class="number">123456</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">localhost</span> ~]<span class="comment"># 切换成功</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>扩展：-横杠作用是什么？答：-横杠代表切换用户的同时，切换用户的家目录</p>
+</blockquote>
+<h2 id="5、uname命令"><a href="#5、uname命令" class="headerlink" title="5、uname命令"></a>5、uname命令</h2><p>主要功能：获取计算机操作系统相关信息</p>
+<p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># uname -a</span></span><br><span class="line">选项说明：</span><br><span class="line"><span class="literal">-a</span> ：all缩写，代表显示所有信息，获取全部的系统信息（类型、全部主机名、内核版本、发布时间、开源计划）</span><br></pre></td></tr></table></figure>
+
+<h2 id="6、ls命令"><a href="#6、ls命令" class="headerlink" title="6、ls命令"></a>6、ls命令</h2><h3 id="☆-用法一"><a href="#☆-用法一" class="headerlink" title="☆ 用法一"></a>☆ 用法一</h3><p>主要功能：ls完整写法list show，以平铺的形式显示当前目录下的文件信息</p>
+<p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="☆-用法二"><a href="#☆-用法二" class="headerlink" title="☆ 用法二"></a>☆ 用法二</h3><p>主要功能：显示其他目录下的文件信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls 其他目录的绝对路径或相对路径</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>扩展：ls后面跟的路径既可以是绝对路径也可以是相对路径</p>
+</blockquote>
+<p><strong>绝对路径</strong>：不管当前工作路径是在哪，&#x3D;&#x3D;目标路径都会从“&#x2F;”磁盘根下开始&#x3D;&#x3D;。<br>案例：访问itheima用户的家目录，查看有哪些文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls /home/itheima</span></span><br></pre></td></tr></table></figure>
+
+<p><font color="red">绝对路径必须以左斜杠开头，一级一级向下访问，不能越级</font></p>
+<p><strong>相对路径</strong>：除绝对路径之外的路径称之为相对路径，相对路径得有一个相对物（当前工作路径）。</p>
+<p>只要看到路径以“&#x2F;”开头则表示该路径是绝对路径，除了以“&#x2F;”开头的路径称之为相对路径。</p>
+<p>当前位置：&#x2F;home&#x2F;itheima目录下</p>
+<p>..&#x2F;：表示上级目录（上一级）</p>
+<p>.&#x2F; ：表示当前目录（同级），普通文件.&#x2F;可以省略，可执行文件（绿色）必须加.&#x2F;</p>
+<p>文件夹名称&#x2F;：表示下级目录（下一级），注意这个斜杠&#x2F;</p>
+<h3 id="☆-用法三"><a href="#☆-用法三" class="headerlink" title="☆ 用法三"></a>☆ 用法三</h3><p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls [选项] [路径]</span></span><br><span class="line">选项说明：</span><br><span class="line"><span class="literal">-l</span> ：<span class="built_in">ls</span> <span class="literal">-l</span>，代表以详细列表的形式显示当前或其他目录下的文件信息(简写命令=&gt;ll)</span><br><span class="line"><span class="literal">-h</span> ：<span class="built_in">ls</span> <span class="literal">-lh</span>，通常与<span class="literal">-l</span>结合一起使用，代表以较高的可读性显示文件的大小(kb/mb/gb)</span><br><span class="line"><span class="literal">-a</span> ：<span class="built_in">ls</span> <span class="literal">-a</span>，a是all缩写，代表显示所有文件（也包含隐藏文件=&gt;大部分以.开头）</span><br></pre></td></tr></table></figure>
+
+<p>计算机中的单位：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1TB = 1024GB</span></span><br><span class="line"><span class="comment"># 1GB = 1024MB</span></span><br><span class="line"><span class="comment"># 1MB = 1024KB</span></span><br><span class="line"><span class="comment"># 1KB（千字节） = 1024B（字节）</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="7、pwd命令"><a href="#7、pwd命令" class="headerlink" title="7、pwd命令"></a>7、pwd命令</h2><p>主要功能：pwd&#x3D;print working directory，打印当前工作目录（告诉我们，我们当前位置）</p>
+<p>基本语法：</p>
+ <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pwd</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="8、cd命令"><a href="#8、cd命令" class="headerlink" title="8、cd命令"></a>8、cd命令</h2><p>主要功能：cd全称change directory，切换目录（从一个目录跳转到另外一个目录）</p>
+<p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd [路径]</span></span><br><span class="line">选项说明：</span><br><span class="line">路径既可以是绝对路径，也可以是相对路径</span><br></pre></td></tr></table></figure>
+
+<p>案例一：切换到&#x2F;usr&#x2F;local这个程序目录</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /usr/local</span></span><br></pre></td></tr></table></figure>
+
+<p>案例二：比如我们当前在&#x2F;home&#x2F;itheima下，切换到根目录&#x2F;下</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /home/itheima</span></span><br><span class="line"><span class="comment"># cd ../../</span></span><br></pre></td></tr></table></figure>
+
+<p>案例三：当我们在某个路径下，如何快速回到自己的家目录</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd</span></span><br><span class="line">或</span><br><span class="line"><span class="comment"># cd ~</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="9、clear命令"><a href="#9、clear命令" class="headerlink" title="9、clear命令"></a>9、clear命令</h2><p>主要功能：清屏</p>
+<p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># clear</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="10、reboot命令"><a href="#10、reboot命令" class="headerlink" title="10、reboot命令"></a>10、reboot命令</h2><p>主要功能：立即重启计算机</p>
+<p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># reboot</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="11、shutdown命令"><a href="#11、shutdown命令" class="headerlink" title="11、shutdown命令"></a>11、shutdown命令</h2><p>主要功能：立即关机或延迟关机</p>
+<p>立即关机基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># shutdown -h 0或now</span></span><br><span class="line"><span class="comment"># shutdown -h 0</span></span><br><span class="line"><span class="comment"># shutdown -h now</span></span><br><span class="line">选项说明：</span><br><span class="line"><span class="literal">-h</span> ：halt缩写，代表关机</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在Linux系统中，立即关机除了使用shutdown -h 0以外还可以使用halt -p命令</p>
+</blockquote>
+<p>延迟关机基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># shutdown -h 分钟数</span></span><br><span class="line">代表多少分钟后，自动关机</span><br></pre></td></tr></table></figure>
+
+<p>案例1：10分钟后自动关机</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># shutdown -h 10</span></span><br></pre></td></tr></table></figure>
+
+<p>案例2：后悔了，取消关机</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">光标一直不停的闪，取消关机</span><br><span class="line"><span class="comment"># 按Ctrl + C（CentOS6，中断关机。CentOS7中还需要使用shutdown -c命令）</span></span><br><span class="line"><span class="comment"># shutdown -c</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="12、type命令"><a href="#12、type命令" class="headerlink" title="12、type命令"></a>12、type命令</h2><p>主要功能：主要用来结合help命令，用于判断命令的类型（属于内部命令还是外部命令）</p>
+<p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># type 命令</span></span><br><span class="line">内部命令：命令 is a shell builtin</span><br><span class="line">外部命令：没有显示以上信息的就是外部命令</span><br></pre></td></tr></table></figure>
+
+<h2 id="13、history命令"><a href="#13、history命令" class="headerlink" title="13、history命令"></a>13、history命令</h2><p>主要功能：显示系统以前输入的前1000条命令</p>
+<p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># history</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="14、hostnamectl命令"><a href="#14、hostnamectl命令" class="headerlink" title="14、hostnamectl命令"></a>14、hostnamectl命令</h2><p>主要功能：用于设置计算机的主机名称（给计算机起个名字），此命令式CentOS7新增的命令。</p>
+<p>hostnamectl ： hostname + control</p>
+<h3 id="☆-获取计算机的主机名称"><a href="#☆-获取计算机的主机名称" class="headerlink" title="☆ 获取计算机的主机名称"></a>☆ 获取计算机的主机名称</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hostname	CentOS6</span></span><br><span class="line"><span class="comment"># hostnamectl  CentOS7</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="☆-设置计算机的主机名称"><a href="#☆-设置计算机的主机名称" class="headerlink" title="☆ 设置计算机的主机名称"></a>☆ 设置计算机的主机名称</h3><p>Centos7中主机名分3类，静态的（static）、瞬态的（transient）、和灵活的（pretty）。</p>
+<p>① 静态static主机名称：电脑关机或重启后，设置的名称亦然有效</p>
+<p>② 瞬态transient主机名称：临时主机名称，电脑关机或重启后，设置的名称就失效了</p>
+<p>③ 灵活pretty主机名称：可以包含一些特殊字符</p>
+<p>CentOS 7中和主机名有关的文件为&#x2F;etc&#x2F;hostname，它是在系统初始化的时候被读取的，并且内核根据它的内容设置瞬态主机名。</p>
+<blockquote>
+<p>更改主机名称，让其永久生效？① 使用静态的 ② 改&#x2F;etc&#x2F;hostname文件</p>
+</blockquote>
+<h4 id="①-瞬态主机名称（临时设置）"><a href="#①-瞬态主机名称（临时设置）" class="headerlink" title="① 瞬态主机名称（临时设置）"></a>① 瞬态主机名称（临时设置）</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hostnamectl --transient set-hostname 主机名称</span></span><br><span class="line">主机名称 建议遵循 FQDN协议（功能+公司域名）</span><br><span class="line">web01.itcast.cn</span><br><span class="line">web02.itcast.cn</span><br></pre></td></tr></table></figure>
+
+<p>案例：临时设置主机名称为yunwei.itcast.cn</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hostnamectl --transient set-hostname yunwei.itcast.cn</span></span><br><span class="line"><span class="comment"># su 立即生效</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="②-静态主机名称（永久生效）"><a href="#②-静态主机名称（永久生效）" class="headerlink" title="② 静态主机名称（永久生效）"></a>② 静态主机名称（永久生效）</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hostnamectl --static set-hostname 主机名称</span></span><br><span class="line">温馨提示：<span class="literal">--static</span>也可以省略不写</span><br></pre></td></tr></table></figure>
+
+<p>案例：把计算机的主机名称永久设置为yunwei.itcast.cn</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hostnamectl --static set-hostname yunwei.itcast.cn</span></span><br><span class="line"><span class="comment"># su 立即生效</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="③-灵活主机名称（主机名称可以添加特殊字符）"><a href="#③-灵活主机名称（主机名称可以添加特殊字符）" class="headerlink" title="③ 灵活主机名称（主机名称可以添加特殊字符）"></a>③ 灵活主机名称（主机名称可以添加特殊字符）</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hostnamectl --pretty set-hostname 主机名称（包含特殊字符）</span></span><br></pre></td></tr></table></figure>
+
+<p>案例：把计算机的主机名称通过灵活设置，设置为yunwei’s server01</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hostnamectl --pretty set-hostname &quot;yunwei&#x27;s server01&quot;</span></span><br><span class="line">查看灵活的主机名称</span><br><span class="line"><span class="comment"># hostnamectl --pretty</span></span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Sesa·Ananta</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/12/22/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">http://example.com/2023/12/22/linux%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">SesaAnanta</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/linux/">linux</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0/">学习</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/12/22/Linux%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%8A%EF%BC%89/" title="Linux文件管理（上）-1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Linux文件管理（上）-1</div></div></a></div><div class="next-post pull-right"><a href="/2023/12/22/%E5%8D%9A%E5%AE%A2%E5%88%9B%E5%BB%BA%E5%AE%8C%E5%96%84%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" title="博客创建完善参考资料"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">博客创建完善参考资料</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/12/23/FTP%E3%80%81NFS%E3%80%81SAMBA%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1%E4%B8%8A/" title="FTP、NFS、SAMBA系统服务上"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">FTP、NFS、SAMBA系统服务上</div></div></a></div><div><a href="/2023/12/23/DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%8ELAMP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" title="DNS域名管理系统与LAMP编译安装"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">DNS域名管理系统与LAMP编译安装</div></div></a></div><div><a href="/2023/12/23/FTP%E3%80%81NFS%E4%BB%A5%E5%8F%8ASAMBA%E6%9C%8D%E5%8A%A1%E4%B8%8B/" title="FTP、NFS以及SAMBA服务下"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">FTP、NFS以及SAMBA服务下</div></div></a></div><div><a href="/2023/12/23/LAMP%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%AE%9E%E6%88%98/" title="LAMP项目部署实战"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">LAMP项目部署实战</div></div></a></div><div><a href="/2023/12/23/Linux%E4%B8%8Byum%E6%BA%90%E9%85%8D%E7%BD%AE%E5%AE%9E%E6%88%98/" title="Linux下yum源配置实战"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">Linux下yum源配置实战</div></div></a></div><div><a href="/2023/12/23/Linux%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%E4%B8%8E%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/" title="Linux文件管理与用户管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">Linux文件管理与用户管理</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sesa·Ananta</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">71</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SesaAnanta/SesaAnanta.github.io" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="email:1874121517@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F"><span class="toc-number">1.</span> <span class="toc-text">Linux系统使用注意</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81Linux%E4%B8%A5%E6%A0%BC%E5%8C%BA%E5%88%86%E5%A4%A7%E5%B0%8F%E5%86%99"><span class="toc-number">1.1.</span> <span class="toc-text">1、Linux严格区分大小写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81Linux%E6%96%87%E4%BB%B6%E2%80%9D%E6%89%A9%E5%B1%95%E5%90%8D%E2%80%9D"><span class="toc-number">1.2.</span> <span class="toc-text">2、Linux文件”扩展名”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81Linux%E4%B8%AD%E6%89%80%E6%9C%89%E5%86%85%E5%AE%B9%E4%BB%A5%E6%96%87%E4%BB%B6%E5%BD%A2%E5%BC%8F%E4%BF%9D%E5%AD%98"><span class="toc-number">1.3.</span> <span class="toc-text">3、Linux中所有内容以文件形式保存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81Linux%E4%B8%AD%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%E9%83%BD%E5%BF%85%E9%A1%BB%E5%9C%A8%E6%8C%82%E8%BD%BD%E4%B9%8B%E5%90%8E%E6%89%8D%E8%83%BD%E4%BD%BF%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">4、Linux中存储设备都必须在挂载之后才能使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">Linux系统的目录结构（重要）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81Linux%E5%88%86%E5%8C%BA%E4%B8%8EWindows%E5%88%86%E5%8C%BA"><span class="toc-number">2.1.</span> <span class="toc-text">1、Linux分区与Windows分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81Linux%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6%E6%9E%B6%E6%9E%84"><span class="toc-number">2.2.</span> <span class="toc-text">2、Linux系统文件架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81Linux%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%94%A8%E9%80%94"><span class="toc-number">2.3.</span> <span class="toc-text">3、Linux系统的文件目录用途</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E5%85%A5%E9%97%A8%E7%BA%A7%E5%91%BD%E4%BB%A4"><span class="toc-number">3.</span> <span class="toc-text">Linux入门级命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%BC%80%E5%90%AF%E7%BB%88%E7%AB%AF"><span class="toc-number">3.1.</span> <span class="toc-text">1、开启终端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81Linux%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="toc-number">3.2.</span> <span class="toc-text">2、Linux命令格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E6%89%A9%E5%B1%95%EF%BC%9ALinux%E4%B8%8B%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%A5%E5%85%A8"><span class="toc-number">3.3.</span> <span class="toc-text">3、扩展：Linux下的命令补全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7"><span class="toc-number">3.4.</span> <span class="toc-text">4、切换用户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81uname%E5%91%BD%E4%BB%A4"><span class="toc-number">3.5.</span> <span class="toc-text">5、uname命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81ls%E5%91%BD%E4%BB%A4"><span class="toc-number">3.6.</span> <span class="toc-text">6、ls命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-%E7%94%A8%E6%B3%95%E4%B8%80"><span class="toc-number">3.6.1.</span> <span class="toc-text">☆ 用法一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-%E7%94%A8%E6%B3%95%E4%BA%8C"><span class="toc-number">3.6.2.</span> <span class="toc-text">☆ 用法二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-%E7%94%A8%E6%B3%95%E4%B8%89"><span class="toc-number">3.6.3.</span> <span class="toc-text">☆ 用法三</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81pwd%E5%91%BD%E4%BB%A4"><span class="toc-number">3.7.</span> <span class="toc-text">7、pwd命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E3%80%81cd%E5%91%BD%E4%BB%A4"><span class="toc-number">3.8.</span> <span class="toc-text">8、cd命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9%E3%80%81clear%E5%91%BD%E4%BB%A4"><span class="toc-number">3.9.</span> <span class="toc-text">9、clear命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10%E3%80%81reboot%E5%91%BD%E4%BB%A4"><span class="toc-number">3.10.</span> <span class="toc-text">10、reboot命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11%E3%80%81shutdown%E5%91%BD%E4%BB%A4"><span class="toc-number">3.11.</span> <span class="toc-text">11、shutdown命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12%E3%80%81type%E5%91%BD%E4%BB%A4"><span class="toc-number">3.12.</span> <span class="toc-text">12、type命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13%E3%80%81history%E5%91%BD%E4%BB%A4"><span class="toc-number">3.13.</span> <span class="toc-text">13、history命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14%E3%80%81hostnamectl%E5%91%BD%E4%BB%A4"><span class="toc-number">3.14.</span> <span class="toc-text">14、hostnamectl命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-%E8%8E%B7%E5%8F%96%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E4%B8%BB%E6%9C%BA%E5%90%8D%E7%A7%B0"><span class="toc-number">3.14.1.</span> <span class="toc-text">☆ 获取计算机的主机名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-%E8%AE%BE%E7%BD%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E4%B8%BB%E6%9C%BA%E5%90%8D%E7%A7%B0"><span class="toc-number">3.14.2.</span> <span class="toc-text">☆ 设置计算机的主机名称</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A0-%E7%9E%AC%E6%80%81%E4%B8%BB%E6%9C%BA%E5%90%8D%E7%A7%B0%EF%BC%88%E4%B8%B4%E6%97%B6%E8%AE%BE%E7%BD%AE%EF%BC%89"><span class="toc-number">3.14.2.1.</span> <span class="toc-text">① 瞬态主机名称（临时设置）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A1-%E9%9D%99%E6%80%81%E4%B8%BB%E6%9C%BA%E5%90%8D%E7%A7%B0%EF%BC%88%E6%B0%B8%E4%B9%85%E7%94%9F%E6%95%88%EF%BC%89"><span class="toc-number">3.14.2.2.</span> <span class="toc-text">② 静态主机名称（永久生效）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A2-%E7%81%B5%E6%B4%BB%E4%B8%BB%E6%9C%BA%E5%90%8D%E7%A7%B0%EF%BC%88%E4%B8%BB%E6%9C%BA%E5%90%8D%E7%A7%B0%E5%8F%AF%E4%BB%A5%E6%B7%BB%E5%8A%A0%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%EF%BC%89"><span class="toc-number">3.14.2.3.</span> <span class="toc-text">③ 灵活主机名称（主机名称可以添加特殊字符）</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/14/hello-world/" title="Hello World">Hello World</a><time datetime="2024-01-14T06:36:34.122Z" title="发表于 2024-01-14 14:36:34">2024-01-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/11/Overlord-15/" title="Overlord-15">Overlord-15</a><time datetime="2024-01-11T02:48:04.000Z" title="发表于 2024-01-11 10:48:04">2024-01-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/10/Overlord-14/" title="Overlord-14">Overlord-14</a><time datetime="2024-01-10T12:52:31.000Z" title="发表于 2024-01-10 20:52:31">2024-01-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/10/%E5%9E%8B%E6%9C%88%E4%B8%96%E7%95%8C%E4%BA%94%E5%A4%A7%E9%AD%94%E6%B3%95/" title="型月世界五大魔法">型月世界五大魔法</a><time datetime="2024-01-10T09:58:23.000Z" title="发表于 2024-01-10 17:58:23">2024-01-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/10/Overlord-13/" title="Overlord-13">Overlord-13</a><time datetime="2024-01-10T01:23:52.000Z" title="发表于 2024-01-10 09:23:52">2024-01-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Sesa·Ananta</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.12.0"></script></div></div></body></html>
