@@ -1,0 +1,565 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>DNS域名管理系统与LAMP编译安装 | 舍沙の窝</title><meta name="author" content="Sesa·Ananta"><meta name="copyright" content="Sesa·Ananta"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="DNS域名管理系统与LAMP编译安装一、DNS域名管理系统1、DNS两种解析正向解析：把域名解析为对应的IP地址 反向解析：把IP地址解析为对应的域名 2、DNS的反向解析目标：把10.1.1.13这个IP地址通过DNS服务器指向www.itcast.cluster域名 第一步：开启网络的访问权限控制 1234567891011# vim &#x2F;etc&#x2F;named.conf12 options &amp;#1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DNS域名管理系统与LAMP编译安装">
+<meta property="og:url" content="http://sesaananta.github.io/posts/27993.html">
+<meta property="og:site_name" content="舍沙の窝">
+<meta property="og:description" content="DNS域名管理系统与LAMP编译安装一、DNS域名管理系统1、DNS两种解析正向解析：把域名解析为对应的IP地址 反向解析：把IP地址解析为对应的域名 2、DNS的反向解析目标：把10.1.1.13这个IP地址通过DNS服务器指向www.itcast.cluster域名 第一步：开启网络的访问权限控制 1234567891011# vim &#x2F;etc&#x2F;named.conf12 options &amp;#1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://sesaananta.github.io/img/%E5%A4%B4%E5%83%8F.png">
+<meta property="article:published_time" content="2023-12-23T09:04:00.000Z">
+<meta property="article:modified_time" content="2024-01-15T08:37:14.254Z">
+<meta property="article:author" content="Sesa·Ananta">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sesaananta.github.io/img/%E5%A4%B4%E5%83%8F.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://sesaananta.github.io/posts/27993.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="manifest" href="/manifest.json"/><link rel="apple-touch-icon" sizes="180x180" href="/img/siteicon/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/img/siteicon/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/img/siteicon/favicon-16x16.png"/><link rel="mask-icon" href="/img/siteicon/safari-pinned-tab.svg" color="#5bbad5"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'DNS域名管理系统与LAMP编译安装',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-01-15 16:37:14'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (true) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/%E5%A4%B4%E5%83%8F.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">72</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/album/"><i class="fa-fw fas fa-images"></i><span> 相册集</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 单链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/%E8%9B%87%E9%BE%99.png')"><nav id="nav"><span id="blog-info"><a href="/" title="舍沙の窝"><span class="site-name">舍沙の窝</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/album/"><i class="fa-fw fas fa-images"></i><span> 相册集</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 单链</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">DNS域名管理系统与LAMP编译安装</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-12-23T09:04:00.000Z" title="发表于 2023-12-23 17:04:00">2023-12-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-01-15T08:37:14.254Z" title="更新于 2024-01-15 16:37:14">2024-01-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/linux/">linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="DNS域名管理系统与LAMP编译安装"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="DNS域名管理系统与LAMP编译安装"><a href="#DNS域名管理系统与LAMP编译安装" class="headerlink" title="DNS域名管理系统与LAMP编译安装"></a>DNS域名管理系统与LAMP编译安装</h1><h1 id="一、DNS域名管理系统"><a href="#一、DNS域名管理系统" class="headerlink" title="一、DNS域名管理系统"></a>一、DNS域名管理系统</h1><h2 id="1、DNS两种解析"><a href="#1、DNS两种解析" class="headerlink" title="1、DNS两种解析"></a>1、DNS两种解析</h2><p>正向解析：把域名解析为对应的IP地址</p>
+<p>反向解析：把IP地址解析为对应的域名</p>
+<h2 id="2、DNS的反向解析"><a href="#2、DNS的反向解析" class="headerlink" title="2、DNS的反向解析"></a>2、DNS的反向解析</h2><p>目标：把10.1.1.13这个IP地址通过DNS服务器指向<a target="_blank" rel="noopener" href="http://www.itcast.cluster域名/">www.itcast.cluster域名</a></p>
+<p>第一步：开启网络的访问权限控制</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /etc/named.conf</span></span><br><span class="line"><span class="number">12</span> options &#123;</span><br><span class="line"><span class="number">13</span>         listen<span class="literal">-on</span> port <span class="number">53</span> &#123; <span class="number">127.0</span>.<span class="number">0.1</span>;any; &#125;;</span><br><span class="line"><span class="number">14</span>         listen<span class="literal">-on-v6</span> port <span class="number">53</span> &#123; ::<span class="number">1</span>; &#125;;</span><br><span class="line"><span class="number">15</span>         directory       <span class="string">&quot;/var/named&quot;</span>;</span><br><span class="line"><span class="number">16</span>         dump<span class="operator">-file</span>       <span class="string">&quot;/var/named/data/cache_dump.db&quot;</span>;</span><br><span class="line"><span class="number">17</span>         statistics<span class="operator">-file</span> <span class="string">&quot;/var/named/data/named_stats.txt&quot;</span>;</span><br><span class="line"><span class="number">18</span>         memstatistics<span class="operator">-file</span> <span class="string">&quot;/var/named/data/named_mem_stats.txt&quot;</span>;</span><br><span class="line"><span class="number">19</span>         recursing<span class="operator">-file</span>  <span class="string">&quot;/var/named/data/named.recursing&quot;</span>;</span><br><span class="line"><span class="number">20</span>         secroots<span class="operator">-file</span>   <span class="string">&quot;/var/named/data/named.secroots&quot;</span>;</span><br><span class="line"><span class="number">21</span>         allow<span class="literal">-query</span>     &#123; localhost;any;&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>第二步：在zones文件中定义zone文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /etc/named.rfc1912.zones</span></span><br><span class="line"><span class="number">49</span> zone <span class="string">&quot;1.1.10.in-addr.arpa&quot;</span> <span class="keyword">IN</span> &#123;</span><br><span class="line"><span class="number">50</span>         <span class="built_in">type</span> master;</span><br><span class="line"><span class="number">51</span>         file <span class="string">&quot;10.1.1.zone&quot;</span>;</span><br><span class="line"><span class="number">52</span>         allow<span class="literal">-update</span> &#123; none; &#125;;</span><br><span class="line"><span class="number">53</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>第三步：cd &#x2F;var&#x2F;named进入到DNS zone配置文件目录，复制named.loopback文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /var/named</span></span><br><span class="line"><span class="comment"># cp -p named.loopback 10.1.1.zone</span></span><br></pre></td></tr></table></figure>
+
+<p>第四步：编辑10.1.1.zone文件，把IP地址&#x3D;&gt;10.1.1.13指向<a target="_blank" rel="noopener" href="http://www.itcast.cluster域名/">www.itcast.cluster域名</a></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$TTL</span> <span class="number">1</span>D</span><br><span class="line"><span class="selector-tag">@</span>       <span class="keyword">IN</span> SOA  <span class="selector-tag">@</span> rname.invalid. (</span><br><span class="line">                                        <span class="number">0</span>       ; serial</span><br><span class="line">                                        <span class="number">1</span>D      ; refresh</span><br><span class="line">                                        <span class="number">1</span><span class="built_in">H</span>      ; retry</span><br><span class="line">                                        <span class="number">1</span>W      ; expire</span><br><span class="line">                                        <span class="number">3</span><span class="built_in">H</span> )    ; minimum</span><br><span class="line">        NS      <span class="selector-tag">@</span></span><br><span class="line">        A       <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line">        AAAA    ::<span class="number">1</span></span><br><span class="line">        PTR     localhost.</span><br><span class="line"><span class="comment">#增加一条反向解析，把10.1.1.13 =&gt; PTR =&gt; www.itcast.cluster</span></span><br><span class="line"><span class="number">13</span>      PTR     www.itcast.cluster</span><br></pre></td></tr></table></figure>
+
+<p>第五步：检查与客户端测试</p>
+<p>DNS服务器：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># named-checkconf /etc/named.conf</span></span><br><span class="line"><span class="comment"># named-checkconf /etc/named.rfc1912.zones</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># cd /var/named</span></span><br><span class="line"><span class="comment"># named-checkzone 10.1.1.zone 10.1.1.zone</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># systemctl restart named</span></span><br></pre></td></tr></table></figure>
+
+<p>客户端检测：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># echo &#x27;nameserver 10.1.1.12&#x27; &gt; /etc/resolv.conf</span></span><br><span class="line"><span class="comment"># nslookup 10.1.1.13</span></span><br><span class="line">www.itcast.cluster.<span class="number">1.1</span>.<span class="number">10</span>.in<span class="literal">-addr</span>.arpa.</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、VMware与CentOS7网络的小bug"><a href="#3、VMware与CentOS7网络的小bug" class="headerlink" title="3、VMware与CentOS7网络的小bug"></a>3、VMware与CentOS7网络的小bug</h2><p>DNS的临时配置方式 &#x3D;&gt; echo  ‘nameserver 10.1.1.12’ &gt; &#x2F;etc&#x2F;resolv.conf</p>
+<blockquote>
+<p>注：当VMware关闭或者挂起时，临时设置的DNS会被重置</p>
+</blockquote>
+<p>CentOS7版本中，有的时候，在网络配置时，明明设置了静态IP，但是无论重启网络、重启网卡，其设置的IP地址都没有生效。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ifconfig ens33</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ip a</span></span><br><span class="line"><span class="number">2</span>: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="number">1500</span> qdisc pfifo_fast state UP <span class="built_in">group</span> default qlen <span class="number">1000</span></span><br><span class="line">    link/ether <span class="number">00</span>:<span class="number">0</span>c:<span class="number">29</span>:<span class="number">68</span>:d8:bb brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet <span class="number">10.1</span>.<span class="number">1.29</span>/<span class="number">24</span> brd <span class="number">10.1</span>.<span class="number">1.255</span> scope global noprefixroute dynamic ens33</span><br><span class="line">       valid_lft <span class="number">1656</span>sec preferred_lft <span class="number">1656</span>sec</span><br><span class="line">    inet <span class="number">10.1</span>.<span class="number">1.11</span>/<span class="number">24</span> brd <span class="number">10.1</span>.<span class="number">1.255</span> scope global secondary ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::<span class="number">20</span>c:<span class="number">29</span>ff:fe68:d8bb/<span class="number">64</span> scope link </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>出现以上问题的主要原因在于图形化界面中的NetworkManager服务没有关闭！</p>
+</blockquote>
+<p>解决方案：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># systemctl stop NetworkManager</span></span><br><span class="line"><span class="comment"># systemctl disable NetworkManager</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4、多域DNS服务器搭建"><a href="#4、多域DNS服务器搭建" class="headerlink" title="4、多域DNS服务器搭建"></a>4、多域DNS服务器搭建</h2><p>需求：搭建一个DNS服务器，可以同时解析test.net和heima.cc域</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>域名</th>
+<th>IP地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a target="_blank" rel="noopener" href="http://www.test.net/">www.test.net</a></td>
+<td>10.1.1.13</td>
+</tr>
+<tr>
+<td>2</td>
+<td>bbs.heima.cc</td>
+<td>10.1.1.13</td>
+</tr>
+</tbody></table>
+<p>第一步：更改named.conf文件，设置网络访问权限</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /etc/named.rfc1912.zones</span></span><br><span class="line"><span class="number">49</span> zone <span class="string">&quot;1.1.10.in-addr.arpa&quot;</span> <span class="keyword">IN</span> &#123;</span><br><span class="line"><span class="number">50</span>         <span class="built_in">type</span> master;</span><br><span class="line"><span class="number">51</span>         file <span class="string">&quot;10.1.1.zone&quot;</span>;</span><br><span class="line"><span class="number">52</span>         allow<span class="literal">-update</span> &#123; none; &#125;;</span><br><span class="line"><span class="number">53</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>第二步：更改named.rfc1912.zones，添加test以及heima域</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /etc/named.rfc1912.zones</span></span><br><span class="line">...</span><br><span class="line">zone <span class="string">&quot;test.net&quot;</span> <span class="keyword">IN</span> &#123;</span><br><span class="line">        <span class="built_in">type</span> master;</span><br><span class="line">        file <span class="string">&quot;test.net.zone&quot;</span>;</span><br><span class="line">        allow<span class="literal">-update</span> &#123; none; &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">zone <span class="string">&quot;heima.cc&quot;</span> <span class="keyword">IN</span> &#123;</span><br><span class="line">        <span class="built_in">type</span> master;</span><br><span class="line">        file <span class="string">&quot;heima.cc.zone&quot;</span>;</span><br><span class="line">        allow<span class="literal">-update</span> &#123; none; &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>第三步：进入&#x2F;var&#x2F;named目录，复制named.localhost</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /var/named</span></span><br><span class="line"><span class="comment"># cp -p named.localhost test.net.zone</span></span><br><span class="line"><span class="comment"># cp -p named.localhost heima.cc.zone</span></span><br></pre></td></tr></table></figure>
+
+<p>第四步：编辑test.net.zone与heima.cc.zone文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim test.net.zone</span></span><br><span class="line">...</span><br><span class="line">www 	A	 <span class="number">10.1</span>.<span class="number">1.13</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># vim heima.cc.zone</span></span><br><span class="line">...</span><br><span class="line">bbs		A	 <span class="number">10.1</span>.<span class="number">1.13</span></span><br></pre></td></tr></table></figure>
+
+<p>第五步：检测配置文件，然后启动named服务（重启）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># named-checkconf /etc/named.conf</span></span><br><span class="line"><span class="comment"># named-checkconf /etc/named.rfc1912.zones</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># cd /var/named</span></span><br><span class="line"><span class="comment"># named-checkzone test.net.zone test.net.zone</span></span><br><span class="line"><span class="comment"># named-checkzone heima.cc.zone heima.cc.zone</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># systemctl restart named</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5、ntp服务器搭建"><a href="#5、ntp服务器搭建" class="headerlink" title="5、ntp服务器搭建"></a>5、ntp服务器搭建</h2><p>基础班ntp回顾：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ntpdate cn.ntp.org.cn</span></span><br></pre></td></tr></table></figure>
+
+<p>虽然以上方式，可以实现对时间的校对！但是由于需要连接外网，其同步需要消耗一定的时间，那有没有更好的解决办法呢？</p>
+<p>第一步：准备一台NTP时间服务器</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>主机名称</th>
+<th>IP地址</th>
+<th>备注信息</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>ntp.itcast.cn</td>
+<td>10.1.1.100</td>
+<td>NTP内网时间服务器</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>扩展：在原有基础上，记住要关闭NetworkManager服务</p>
+</blockquote>
+<p>第二步：安装ntp服务软件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum install ntp -y</span></span><br></pre></td></tr></table></figure>
+
+<p>第三步：更改配置文件，开启ntp服务</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /etc/ntp.conf</span></span><br><span class="line"><span class="number">13</span> restrict <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="number">14</span> restrict ::<span class="number">1</span></span><br><span class="line"><span class="comment"># 手工添加10.1.1.0网段，范围10.1.1.1 ~ 10.1.1.254</span></span><br><span class="line"><span class="number">15</span> restrict <span class="number">10.1</span>.<span class="number">1.0</span> mask <span class="number">255.255</span>.<span class="number">255.0</span></span><br></pre></td></tr></table></figure>
+
+<p>第四步：启动ntpd服务</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ntpdate cn.ntp.org.cn</span></span><br><span class="line"><span class="comment"># systemctl restart ntpd</span></span><br></pre></td></tr></table></figure>
+
+<p>到此NTP时间服务器配置完毕，以后所有的计算机都可以直接使用ntpdate同步此NTP服务器</p>
+<p>DNS-MASTER、DNS-SLAVE</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ntpdate 10.1.1.100</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>10.1.1.100是内网NTP时间服务器的IP地址</p>
+</blockquote>
+<blockquote>
+<p>除此以外，我们还可以使用计划任务，定期进行时间的同步(针对所有的客户端)</p>
+</blockquote>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># crontab -e</span></span><br><span class="line">*/<span class="number">2</span> * * * * /usr/sbin/ntpdate <span class="number">10.1</span>.<span class="number">1.100</span> &amp;&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<h2 id="6、DNS主从部署"><a href="#6、DNS主从部署" class="headerlink" title="6、DNS主从部署"></a>6、DNS主从部署</h2><p><img src="/../assets/blog_res/DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%8ELAMP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85.assets/image-20200416140619919.png" alt="image-20200416140619919"></p>
+<p>主从部署的核心思路：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. master和slave的系统时间保持一致</span><br><span class="line"><span class="number">2</span>. slave服务器上安装相应的软件（系统版本、软件版本保持一致）</span><br><span class="line"><span class="number">3</span>. 根据需求修改相应的配置文件（master和slave都应该去修改）</span><br><span class="line"><span class="number">4</span>. 主从同步的核心是slave同步master上的区域文件（zone文件）</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>master：主	slave：从</p>
+</blockquote>
+<p>第一步：准备一台slave从服务器(略)</p>
+<p>① 克隆 ② 更改主机名称以及IP地址（更改UUID编号、关闭NetworkManager）③ 关闭防火墙与SELinux ④ 配置YUM源</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>主机名称</th>
+<th>IP地址</th>
+<th>备注信息</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>slave.itcast.cn</td>
+<td>10.1.1.14</td>
+<td>dns slave从服务器</td>
+</tr>
+</tbody></table>
+<p>第二步：更改主dns服务器，允许其他的从服务器下载同步资源</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /etc/named.conf</span></span><br><span class="line"><span class="number">12</span> options &#123;</span><br><span class="line"><span class="number">13</span>         listen<span class="literal">-on</span> port <span class="number">53</span> &#123; <span class="number">127.0</span>.<span class="number">0.1</span>;any; &#125;;</span><br><span class="line"><span class="number">14</span>         listen<span class="literal">-on-v6</span> port <span class="number">53</span> &#123; ::<span class="number">1</span>; &#125;;</span><br><span class="line"><span class="number">15</span>         allow<span class="literal">-transfer</span> &#123;<span class="number">10.1</span>.<span class="number">1.14</span>; &#125;;	=&gt;  允许从服务器的IP地址过来同步资源</span><br><span class="line"><span class="number">16</span>         directory       <span class="string">&quot;/var/named&quot;</span>;</span><br><span class="line"><span class="number">17</span>         dump<span class="operator">-file</span>       <span class="string">&quot;/var/named/data/cache_dump.db&quot;</span>;</span><br><span class="line"><span class="number">18</span>         statistics<span class="operator">-file</span> <span class="string">&quot;/var/named/data/named_stats.txt&quot;</span>;</span><br><span class="line"><span class="number">19</span>         memstatistics<span class="operator">-file</span> <span class="string">&quot;/var/named/data/named_mem_stats.txt&quot;</span>;</span><br><span class="line"><span class="number">20</span>         recursing<span class="operator">-file</span>  <span class="string">&quot;/var/named/data/named.recursing&quot;</span>;</span><br><span class="line"><span class="number">21</span>         secroots<span class="operator">-file</span>   <span class="string">&quot;/var/named/data/named.secroots&quot;</span>;</span><br><span class="line"><span class="number">22</span>         allow<span class="literal">-query</span>     &#123; localhost;any;&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># systemctl restart named</span></span><br></pre></td></tr></table></figure>
+
+<p>第三步：SLAVE从服务器配置</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum install bind -y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># vim /etc/named.conf</span></span><br><span class="line"><span class="number">12</span> options &#123;</span><br><span class="line"><span class="number">13</span>         listen<span class="literal">-on</span> port <span class="number">53</span> &#123; <span class="number">127.0</span>.<span class="number">0.1</span>;any; &#125;;</span><br><span class="line"><span class="number">14</span>         listen<span class="literal">-on-v6</span> port <span class="number">53</span> &#123; ::<span class="number">1</span>; &#125;;</span><br><span class="line"><span class="number">15</span>         directory       <span class="string">&quot;/var/named&quot;</span>;</span><br><span class="line"><span class="number">16</span>         dump<span class="operator">-file</span>       <span class="string">&quot;/var/named/data/cache_dump.db&quot;</span>;</span><br><span class="line"><span class="number">17</span>         statistics<span class="operator">-file</span> <span class="string">&quot;/var/named/data/named_stats.txt&quot;</span>;</span><br><span class="line"><span class="number">18</span>         memstatistics<span class="operator">-file</span> <span class="string">&quot;/var/named/data/named_mem_stats.txt&quot;</span>;</span><br><span class="line"><span class="number">19</span>         recursing<span class="operator">-file</span>  <span class="string">&quot;/var/named/data/named.recursing&quot;</span>;</span><br><span class="line"><span class="number">20</span>         secroots<span class="operator">-file</span>   <span class="string">&quot;/var/named/data/named.secroots&quot;</span>;</span><br><span class="line"><span class="number">21</span>         allow<span class="literal">-query</span>     &#123; localhost;any; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># vim /etc/named.rfc1912.zones</span></span><br><span class="line">zone <span class="string">&quot;test.net&quot;</span> <span class="keyword">IN</span> &#123;</span><br><span class="line">        <span class="built_in">type</span> slave;</span><br><span class="line">        file <span class="string">&quot;slaves/test.net&quot;</span>;</span><br><span class="line">        masters &#123; <span class="number">10.1</span>.<span class="number">1.12</span>; &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">zone <span class="string">&quot;heima.cc&quot;</span> <span class="keyword">IN</span> &#123;</span><br><span class="line">        <span class="built_in">type</span> slave;</span><br><span class="line">        file <span class="string">&quot;slaves/heima.cc&quot;</span>;</span><br><span class="line">        masters &#123; <span class="number">10.1</span>.<span class="number">1.12</span>; &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检测配置文件是否有错（略）</span></span><br><span class="line"><span class="comment"># named-checkconf ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># systemctl restart named</span></span><br></pre></td></tr></table></figure>
+
+<p>第四步：在Client客户端，把Slave从服务器的IP设置为DNS</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># echo &#x27;nameserver 10.1.1.14&#x27; &gt; /etc/resolv.conf</span></span><br><span class="line"><span class="comment"># nslookup www.test.net</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="二、LAMP源码构建"><a href="#二、LAMP源码构建" class="headerlink" title="二、LAMP源码构建"></a>二、LAMP源码构建</h1><h2 id="1、项目背景"><a href="#1、项目背景" class="headerlink" title="1、项目背景"></a>1、项目背景</h2><p>为企业内部的开发人员，部署一套“预发布系统”，要求其环境与线上环境一模一样。</p>
+<p>由于项目是基于PHP + MySQL进行开发设计的，所以我们需要选配环境。</p>
+<p>LAMP &#x3D; Linux + Apache + MySQL + PHP</p>
+<p>LNMP &#x3D; Linux + Nginx + MySQL + PHP</p>
+<p>经过开发人员的沟通确认 &#x3D;&gt; LAMP作为预发布环境！</p>
+<p><img src="/../assets/blog_res/DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%8ELAMP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85.assets/image-20200416152428473.png" alt="image-20200416152428473"></p>
+<h2 id="2、任务要求"><a href="#2、任务要求" class="headerlink" title="2、任务要求"></a>2、任务要求</h2><ul>
+<li>&#x3D;&#x3D;<strong>源码</strong>部署LAMP环境&#x3D;&#x3D;，和生产保持一致</li>
+<li>静态资源文件同步生产环境（生产发生改变立马同步到预发布平台）</li>
+</ul>
+<h2 id="3、环境准备"><a href="#3、环境准备" class="headerlink" title="3、环境准备"></a>3、环境准备</h2><p>系统环境：CentOS7.6</p>
+<p>软件环境：AMP（Apache、MySQL以及PHP）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Apache——&gt;<span class="number">2.4</span>.<span class="number">37</span>（<span class="number">2.2</span>与<span class="number">2.4</span>）</span><br><span class="line">MySQL——&gt;<span class="number">5.6</span>.<span class="number">31</span>（<span class="number">5.5</span>、<span class="number">5.6</span>与<span class="number">5.7</span>）</span><br><span class="line">PHP——&gt;<span class="number">7.2</span>.<span class="number">17</span>（<span class="number">5.2</span>、<span class="number">5.4</span>、<span class="number">5.6</span>、<span class="number">7.0</span>、<span class="number">7.1</span>、<span class="number">7.2</span>）</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、系统环境"><a href="#4、系统环境" class="headerlink" title="4、系统环境"></a>4、系统环境</h2><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>主机名称</th>
+<th>IP地址</th>
+<th>备注信息</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>web.itcast.cn</td>
+<td>10.1.1.13</td>
+<td>LAMP预发布环境</td>
+</tr>
+</tbody></table>
+<p>① 更改主机名称、配置IP地址（静态IP、更改UUID编号、关闭NetworkManager）</p>
+<p>② 关闭防火墙、SELinux</p>
+<p>③ 配置YUM源（有网配公网，没网配光盘或自建YUM源）</p>
+<h2 id="5、依赖软件安装"><a href="#5、依赖软件安装" class="headerlink" title="5、依赖软件安装"></a>5、依赖软件安装</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum install cmake pcre-devel ncurses-devel openssl-devel libcurl-devel</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6、AMP软件安装注意事项"><a href="#6、AMP软件安装注意事项" class="headerlink" title="6、AMP软件安装注意事项"></a>6、AMP软件安装注意事项</h2><p><img src="/../assets/blog_res/DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%8ELAMP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85.assets/image-20200416154343314.png" alt="image-20200416154343314"></p>
+<p>编译安装顺序：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Linux+Apache(<span class="number">2.4</span>)+MySQL(<span class="number">5.6</span>.<span class="number">31</span>)+PHP(<span class="number">7.2</span>.<span class="number">17</span>)</span><br><span class="line"></span><br><span class="line">Apache——&gt;MySQL——&gt;PHP 或者  MySQL——&gt;Apache——&gt;PHP</span><br></pre></td></tr></table></figure>
+
+<h1 id="三、编译安装MySQL软件"><a href="#三、编译安装MySQL软件" class="headerlink" title="三、编译安装MySQL软件"></a>三、编译安装MySQL软件</h1><h2 id="1、安装需求"><a href="#1、安装需求" class="headerlink" title="1、安装需求"></a>1、安装需求</h2><table>
+<thead>
+<tr>
+<th>软件版本</th>
+<th>安装目录</th>
+<th>数据目录</th>
+<th>端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mysql-5.6.31</td>
+<td>&#x2F;usr&#x2F;local&#x2F;mysql</td>
+<td>&#x2F;usr&#x2F;local&#x2F;mysql&#x2F;data</td>
+<td>3306</td>
+</tr>
+</tbody></table>
+<h2 id="2、MySQL安装详解"><a href="#2、MySQL安装详解" class="headerlink" title="2、MySQL安装详解"></a>2、MySQL安装详解</h2><p>第一步：创建一个mysql系统账号（没有这个账号mysql无法运行）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># useradd -r -s /sbin/nologin mysql</span></span><br></pre></td></tr></table></figure>
+
+<p>第二步：对软件进行解压</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tar xf mysql-5.6.31.tar.gz</span></span><br><span class="line"><span class="comment"># cd mysql-5.6.31</span></span><br></pre></td></tr></table></figure>
+
+<p>第三步：使用cmake配置MySQL的安装向导</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim cmake.sh</span></span><br><span class="line">cmake . \</span><br><span class="line"><span class="literal">-DCMAKE_INSTALL_PREFIX</span>=/usr/local/mysql/ \</span><br><span class="line"><span class="literal">-DMYSQL_DATADIR</span>=/usr/local/mysql/<span class="keyword">data</span> \</span><br><span class="line"><span class="literal">-DENABLED_LOCAL_INFILE</span>=<span class="number">1</span> \</span><br><span class="line"><span class="literal">-DWITH_INNOBASE_STORAGE_ENGINE</span>=<span class="number">1</span> \</span><br><span class="line"><span class="literal">-DMYSQL_TCP_PORT</span>=<span class="number">3306</span> \</span><br><span class="line"><span class="literal">-DDEFAULT_CHARSET</span>=utf8mb4 \</span><br><span class="line"><span class="literal">-DDEFAULT_COLLATION</span>=utf8mb4_general_ci \</span><br><span class="line"><span class="literal">-DWITH_EXTRA_CHARSETS</span>=all \</span><br><span class="line"><span class="literal">-DMYSQL_USER</span>=mysql</span><br><span class="line"></span><br><span class="line"><span class="comment"># chmod +x cmake.sh</span></span><br><span class="line"><span class="comment"># ./cmake.sh</span></span><br></pre></td></tr></table></figure>
+
+<p>第四步：make &amp;&amp; make install</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># make &amp;&amp; make install</span></span><br></pre></td></tr></table></figure>
+
+<p>第五步：更改目录权限以及初始化数据库</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># chown -R mysql.mysql /usr/local/mysql</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># cd /usr/local/mysql</span></span><br><span class="line">删除/etc/my.cnf文件，如果不删除此文件，会导致初始化失败</span><br><span class="line"><span class="comment"># rm -f /etc/my.cnf</span></span><br><span class="line">初始化就是给mysql数据库一些初始化的数据（如账号、密码、数据文件，ll <span class="keyword">data</span>）</span><br><span class="line"><span class="comment"># ./scripts/mysql_install_db --user=mysql</span></span><br><span class="line"><span class="comment"># ll data</span></span><br><span class="line">这个目录如果产生了一个mysql的文件夹就代表初始化成功了</span><br></pre></td></tr></table></figure>
+
+<p>第六步：把mysql的启动脚本copy到&#x2F;etc&#x2F;init.d目录下，起一个名称叫做mysql</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cp support-files/mysql.server /etc/init.d/mysql</span></span><br><span class="line"><span class="comment"># service mysql start</span></span><br></pre></td></tr></table></figure>
+
+<p>第七步：设置密码与环境变量</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /usr/local/mysql</span></span><br><span class="line"><span class="comment"># bin/mysqladmin -u root password &#x27;123&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>生产环境下，密码一定要越复杂越好</p>
+</blockquote>
+<p>第八步：把&#x2F;usr&#x2F;local&#x2F;mysql&#x2F;bin目录添加到环境变量</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># echo &#x27;export PATH=$PATH:/usr/local/mysql/bin&#x27; &gt;&gt; /etc/profile</span></span><br><span class="line"><span class="comment"># source /etc/profile</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># mysql -uroot -p</span></span><br><span class="line">Enter password:<span class="number">123</span></span><br><span class="line">mysql&gt; <span class="keyword">exit</span>;</span><br></pre></td></tr></table></figure>
+
+<h1 id="四、编译安装Apache软件"><a href="#四、编译安装Apache软件" class="headerlink" title="四、编译安装Apache软件"></a>四、编译安装Apache软件</h1><h2 id="1、源码安装依赖软件apr"><a href="#1、源码安装依赖软件apr" class="headerlink" title="1、源码安装依赖软件apr"></a>1、源码安装依赖软件apr</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">安装apr软件：</span><br><span class="line"><span class="comment"># tar xf apr-1.5.2.tar.bz2</span></span><br><span class="line"><span class="comment"># cd apr-1.5.2</span></span><br><span class="line"><span class="comment"># ./configure &amp;&amp; make &amp;&amp; make install</span></span><br><span class="line"></span><br><span class="line">安装apr<span class="literal">-util</span>软件：</span><br><span class="line"><span class="comment"># tar xf apr-util-1.5.4.tar.bz2</span></span><br><span class="line"><span class="comment"># cd apr-util-1.5.4/</span></span><br><span class="line"><span class="comment"># ./configure --with-apr=/usr/local/apr/bin/apr-1-config    指定软件apr的路径</span></span><br><span class="line"><span class="comment"># make &amp;&amp; make install</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2、编译安装Apache软件（重点）"><a href="#2、编译安装Apache软件（重点）" class="headerlink" title="2、编译安装Apache软件（重点）"></a>2、编译安装Apache软件（重点）</h2><p>第一步：解压软件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum remove httpd -y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># tar xf httpd-2.4.37.tar.bz2</span></span><br><span class="line"><span class="comment"># cd httpd-2.4.37</span></span><br></pre></td></tr></table></figure>
+
+<p>第二步：编写apache.sh脚本进行软件安装</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim apache.sh</span></span><br><span class="line">./configure \</span><br><span class="line"><span class="literal">--enable-modules</span>=all \</span><br><span class="line"><span class="literal">--enable-mods-shared</span>=all \</span><br><span class="line"><span class="literal">--enable-so</span> \</span><br><span class="line"><span class="literal">--enable-rewrite</span> \</span><br><span class="line"><span class="literal">--with-pcre</span> \</span><br><span class="line"><span class="literal">--enable-ssl</span> \</span><br><span class="line"><span class="literal">--with-mpm</span>=prefork \</span><br><span class="line"><span class="literal">--with-apr</span>=/usr/local/apr/bin/apr<span class="literal">-1-config</span> \</span><br><span class="line"><span class="literal">--with-apr-util</span>=/usr/local/apr/bin/apu<span class="literal">-1-config</span></span><br></pre></td></tr></table></figure>
+
+<p>第三步：给予x权限，然后make &amp;&amp; make  install</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># chmod +x apache.sh</span></span><br><span class="line"><span class="comment"># ./apache.sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># make &amp;&amp; make install</span></span><br></pre></td></tr></table></figure>
+
+<p>第四步：运行Apache软件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /usr/local/apache2/</span></span><br><span class="line"><span class="comment"># bin/apachectl</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../assets/blog_res/DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%8ELAMP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85.assets/image-20200416173436794.png" alt="image-20200416173436794"></p>
+<h1 id="五、源码安装PHP软件"><a href="#五、源码安装PHP软件" class="headerlink" title="五、源码安装PHP软件"></a>五、源码安装PHP软件</h1><h2 id="1、安装说明"><a href="#1、安装说明" class="headerlink" title="1、安装说明"></a>1、安装说明</h2><p>第一步：对软件进行解压缩</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tar xf php-7.2.17.tar.xz</span></span><br><span class="line"><span class="comment"># cd php-7.2.17</span></span><br></pre></td></tr></table></figure>
+
+<p>第二步：对php源码进行一个配置</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim php.sh</span></span><br><span class="line">./configure \</span><br><span class="line"><span class="literal">--with-apxs2</span>=/usr/local/apache2/bin/apxs \</span><br><span class="line"><span class="literal">--with-mysqli</span> \</span><br><span class="line"><span class="literal">--with-pdo-mysql</span> \</span><br><span class="line"><span class="literal">--with-zlib</span> \</span><br><span class="line"><span class="literal">--with-curl</span> \</span><br><span class="line"><span class="literal">--enable-zip</span> \</span><br><span class="line"><span class="literal">--with-gd</span> \</span><br><span class="line"><span class="literal">--with-freetype-dir</span> \</span><br><span class="line"><span class="literal">--with-jpeg-dir</span> \</span><br><span class="line"><span class="literal">--with-png-dir</span> \</span><br><span class="line"><span class="literal">--enable-sockets</span> \</span><br><span class="line"><span class="literal">--with-xmlrpc</span> \</span><br><span class="line"><span class="literal">--enable-soap</span> \</span><br><span class="line"><span class="literal">--enable-opcache</span> \</span><br><span class="line"><span class="literal">--enable-mbstring</span> \</span><br><span class="line"><span class="literal">--enable-mbregex</span> \</span><br><span class="line"><span class="literal">--enable-pcntl</span> \</span><br><span class="line"><span class="literal">--enable-shmop</span> \</span><br><span class="line"><span class="literal">--enable-sysvmsg</span> \</span><br><span class="line"><span class="literal">--enable-sysvsem</span> \</span><br><span class="line"><span class="literal">--enable-sysvshm</span> \</span><br><span class="line"><span class="literal">--enable-calendar</span> \</span><br><span class="line"><span class="literal">--enable-bcmath</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># chmod +x php.sh</span></span><br><span class="line"><span class="comment"># ./php.sh</span></span><br></pre></td></tr></table></figure>
+
+<p>第三步：解决PHP依赖关系</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">configure: error: libxml2 not found. Please check your libxml2 installation.</span><br></pre></td></tr></table></figure>
+
+<p>出现以上提示，代表php与其他软件存在依赖关系：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum install libxml2-devel -y</span></span><br></pre></td></tr></table></figure>
+
+<p>除了以上这个依赖以外，还存在其他依赖：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum install libjpeg-devel libpng-devel freetype-devel -y</span></span><br></pre></td></tr></table></figure>
+
+<p>第四步：编译+安装</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># make &amp;&amp; make install</span></span><br></pre></td></tr></table></figure>
+
+<p>第五步：检查php有没有安装成功</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls /usr/local/apache2/modules/libphp7.so</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2、配置Apache与PHP"><a href="#2、配置Apache与PHP" class="headerlink" title="2、配置Apache与PHP"></a>2、配置Apache与PHP</h2><p>第一步：打开Apache的配置文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /usr/local/apache2/conf/httpd.conf</span></span><br><span class="line"><span class="number">209</span>行 ServerName localhost:<span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>第二步：配置Apache语言支持（支持中文）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">159</span>行 LoadModule negotiation_module modules/mod_negotiation.so 此模块打开注释</span><br><span class="line"><span class="number">483</span>行 Include conf/extra/httpd<span class="literal">-languages</span>.conf  打开此选项，扩展配置文件就生效了</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>第三步：开启对PHP的支持</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">166</span>行 LoadModule php7_module modules/libphp7.so</span><br><span class="line">AddHandler php7<span class="literal">-script</span> .php		</span><br><span class="line">AddType text/html .php</span><br></pre></td></tr></table></figure>
+
+<p>第四步：添加index.php默认首页</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//默认主页加上index.php,并放在index.html前,支持php的首页文件</span><br><span class="line">&lt;IfModule dir_module&gt;</span><br><span class="line"><span class="number">270</span>行    DirectoryIndex index.php index.html</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+
+<p>第五步：让Apache优先支持中文</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /usr/local/apache2/conf/extra/httpd-languages.conf</span></span><br><span class="line"><span class="number">19</span>行 DefaultLanguage zh<span class="literal">-CN</span>	  打开注释，默认语言集改为中文</span><br><span class="line"><span class="number">78</span>行 LanguagePriority zh<span class="literal">-CN</span> en ca cs da de el eo es et fr he hr it ja ko ltz nl nn no pl pt pt<span class="literal">-BR</span> ru <span class="built_in">sv</span> tr zh<span class="literal">-TW</span>		语言集优先集，把zh<span class="literal">-CN</span> 写到前面</span><br></pre></td></tr></table></figure>
+
+<p>设置完成后，重启Apache软件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /usr/local/apache2</span></span><br><span class="line"><span class="comment"># bin/apachectl -k restart</span></span><br><span class="line"><span class="comment"># bin/apachectl -k restart</span></span><br><span class="line"></span><br><span class="line">备注：如果还不行，直接pkill httpd，然后bin/apachectl启动</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、编写php测试脚本"><a href="#3、编写php测试脚本" class="headerlink" title="3、编写php测试脚本"></a>3、编写php测试脚本</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /usr/local/apache2/htdocs				   htdocs就是apache的默认项目目录</span></span><br><span class="line"><span class="comment"># rm -f index.html</span></span><br><span class="line"><span class="comment"># vim index.php</span></span><br><span class="line">&lt;?php</span><br><span class="line">        phpinfo();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>到此，LAMP源码编译安装就结束了！</p>
+<h1 id="六、使用LAMP部署Web项目"><a href="#六、使用LAMP部署Web项目" class="headerlink" title="六、使用LAMP部署Web项目"></a>六、使用LAMP部署Web项目</h1><h2 id="1、下载wordpress博客系统"><a href="#1、下载wordpress博客系统" class="headerlink" title="1、下载wordpress博客系统"></a>1、下载wordpress博客系统</h2><p>wordpress-4.7.3-zh_CN.tar.gz</p>
+<h2 id="2、解压"><a href="#2、解压" class="headerlink" title="2、解压"></a>2、解压</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tar xf wordpress-4.7.3-zh_CN.tar.gz</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3、创建一个项目目录"><a href="#3、创建一个项目目录" class="headerlink" title="3、创建一个项目目录"></a>3、创建一个项目目录</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mkdir /www</span></span><br><span class="line"><span class="comment"># mv wordpress /www/blog</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># chown -R daemon.daemon /www/blog/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4、配置虚拟主机-一台服务器多个项目"><a href="#4、配置虚拟主机-一台服务器多个项目" class="headerlink" title="4、配置虚拟主机(一台服务器多个项目)"></a>4、配置虚拟主机(一台服务器多个项目)</h2><p>正常情况下：&#x2F;usr&#x2F;local&#x2F;apache2&#x2F;htdocs目录下（相当于&#x2F;var&#x2F;www&#x2F;html）</p>
+<p>一台服务器多个项目：使用虚拟主机</p>
+<p>第一步：在httpd.conf配置文件中开启虚拟主机的配置文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /usr/local/apache2/conf/httpd.conf</span></span><br><span class="line"><span class="comment"># Virtual hosts</span></span><br><span class="line"><span class="number">494</span>行 Include conf/extra/httpd<span class="literal">-vhosts</span>.conf		//打开加载虚拟主机配置文件</span><br></pre></td></tr></table></figure>
+
+<p>第二步：在&#x2F;usr&#x2F;local&#x2F;apache2&#x2F;conf&#x2F;extra&#x2F;httpd-vhosts.conf定义项目</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /usr/local/apache2/conf/extra/httpd-vhosts.conf</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../assets/blog_res/DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%8ELAMP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85.assets/image-20200416202109513.png" alt="image-20200416202109513"></p>
+<p>第三步：重启Apache</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /usr/local/apache2</span></span><br><span class="line"><span class="comment"># bin/apachectl -k stop</span></span><br><span class="line"><span class="comment"># bin/apachectl</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5、在数据库中创建一个blog数据库"><a href="#5、在数据库中创建一个blog数据库" class="headerlink" title="5、在数据库中创建一个blog数据库"></a>5、在数据库中创建一个blog数据库</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mysql -uroot -p</span></span><br><span class="line">Enter password:<span class="number">123</span></span><br><span class="line">mysql&gt; create database blog default charset utf8;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6、在Windows中配置本地DNS"><a href="#6、在Windows中配置本地DNS" class="headerlink" title="6、在Windows中配置本地DNS"></a>6、在Windows中配置本地DNS</h2><p>运行（Windows + R） &#x3D;&gt; drivers + 回车：C:\Windows\System32\drivers\etc\hosts</p>
+<p>Windows的DNS文件 &#x3D;&gt; 可以劫持域名，自定义域名指向：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10.1</span>.<span class="number">1.13</span> www.blog.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="7、使用Google浏览器或Firefox浏览器安装博客"><a href="#7、使用Google浏览器或Firefox浏览器安装博客" class="headerlink" title="7、使用Google浏览器或Firefox浏览器安装博客"></a>7、使用Google浏览器或Firefox浏览器安装博客</h2><p>第一次访问：报403 Forbidden</p>
+<p>原因：默认情况下，httpd不允许其他主机访问项目目录</p>
+<p>解决方案：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /usr/local/apache2/conf/httpd.conf</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../assets/blog_res/DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%8ELAMP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85.assets/image-20200416203955556.png" alt="image-20200416203955556"></p>
+<p>配置数据库：</p>
+<p><img src="/../assets/blog_res/DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%8ELAMP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85.assets/image-20200416204100546.png" alt="image-20200416204100546"></p>
+<p>运行结果：</p>
+<p><img src="/../assets/blog_res/DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%8ELAMP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85.assets/image-20231223171611263.png" alt="image-20231223171611263"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://sesaananta.github.io">Sesa·Ananta</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://sesaananta.github.io/posts/27993.html">http://sesaananta.github.io/posts/27993.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sesaananta.github.io" target="_blank">舍沙の窝</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/linux/">linux</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0/">学习</a></div><div class="post_share"><div class="social-share" data-image="/img/%E5%A4%B4%E5%83%8F.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/12601.html" title="SHELL编程前奏_小工具"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SHELL编程前奏_小工具</div></div></a></div><div class="next-post pull-right"><a href="/posts/64154.html" title="SAMBA文件共享与DNS域名服务"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">SAMBA文件共享与DNS域名服务</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/51956.html" title="FTP、NFS、SAMBA系统服务上"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">FTP、NFS、SAMBA系统服务上</div></div></a></div><div><a href="/posts/56482.html" title="FTP、NFS以及SAMBA服务下"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">FTP、NFS以及SAMBA服务下</div></div></a></div><div><a href="/posts/60335.html" title="LAMP项目部署实战"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">LAMP项目部署实战</div></div></a></div><div><a href="/posts/17304.html" title="Linux下yum源配置实战"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">Linux下yum源配置实战</div></div></a></div><div><a href="/posts/48817.html" title="Linux文件管理与用户管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">Linux文件管理与用户管理</div></div></a></div><div><a href="/posts/971.html" title="Linux文件管理（上）-2"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">Linux文件管理（上）-2</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/%E5%A4%B4%E5%83%8F.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sesa·Ananta</div><div class="author-info__description">一介愚人，但求无悔</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">72</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/SesaAnanta/SesaAnanta.github.io"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SesaAnanta/SesaAnanta.github.io" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://space.bilibili.com/7820821" target="_blank" title="BiliBili"><i class="fab fa-bilibili" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1874121517@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到一介愚人、网络乞丐、无业游民、扑街写手的个人博客，此处记录闲言碎语，断章同人，学习笔记以及一些无用的努力</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%8ELAMP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">DNS域名管理系统与LAMP编译安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81DNS%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">一、DNS域名管理系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81DNS%E4%B8%A4%E7%A7%8D%E8%A7%A3%E6%9E%90"><span class="toc-number">2.1.</span> <span class="toc-text">1、DNS两种解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81DNS%E7%9A%84%E5%8F%8D%E5%90%91%E8%A7%A3%E6%9E%90"><span class="toc-number">2.2.</span> <span class="toc-text">2、DNS的反向解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81VMware%E4%B8%8ECentOS7%E7%BD%91%E7%BB%9C%E7%9A%84%E5%B0%8Fbug"><span class="toc-number">2.3.</span> <span class="toc-text">3、VMware与CentOS7网络的小bug</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E5%A4%9A%E5%9F%9FDNS%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA"><span class="toc-number">2.4.</span> <span class="toc-text">4、多域DNS服务器搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81ntp%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA"><span class="toc-number">2.5.</span> <span class="toc-text">5、ntp服务器搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81DNS%E4%B8%BB%E4%BB%8E%E9%83%A8%E7%BD%B2"><span class="toc-number">2.6.</span> <span class="toc-text">6、DNS主从部署</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81LAMP%E6%BA%90%E7%A0%81%E6%9E%84%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">二、LAMP源码构建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF"><span class="toc-number">3.1.</span> <span class="toc-text">1、项目背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E4%BB%BB%E5%8A%A1%E8%A6%81%E6%B1%82"><span class="toc-number">3.2.</span> <span class="toc-text">2、任务要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">3.3.</span> <span class="toc-text">3、环境准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83"><span class="toc-number">3.4.</span> <span class="toc-text">4、系统环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E4%BE%9D%E8%B5%96%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">3.5.</span> <span class="toc-text">5、依赖软件安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81AMP%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.6.</span> <span class="toc-text">6、AMP软件安装注意事项</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85MySQL%E8%BD%AF%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">三、编译安装MySQL软件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85%E9%9C%80%E6%B1%82"><span class="toc-number">4.1.</span> <span class="toc-text">1、安装需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81MySQL%E5%AE%89%E8%A3%85%E8%AF%A6%E8%A7%A3"><span class="toc-number">4.2.</span> <span class="toc-text">2、MySQL安装详解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Apache%E8%BD%AF%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text">四、编译安装Apache软件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%E8%BD%AF%E4%BB%B6apr"><span class="toc-number">5.1.</span> <span class="toc-text">1、源码安装依赖软件apr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Apache%E8%BD%AF%E4%BB%B6%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">5.2.</span> <span class="toc-text">2、编译安装Apache软件（重点）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85PHP%E8%BD%AF%E4%BB%B6"><span class="toc-number">6.</span> <span class="toc-text">五、源码安装PHP软件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E"><span class="toc-number">6.1.</span> <span class="toc-text">1、安装说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E9%85%8D%E7%BD%AEApache%E4%B8%8EPHP"><span class="toc-number">6.2.</span> <span class="toc-text">2、配置Apache与PHP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E7%BC%96%E5%86%99php%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC"><span class="toc-number">6.3.</span> <span class="toc-text">3、编写php测试脚本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E4%BD%BF%E7%94%A8LAMP%E9%83%A8%E7%BD%B2Web%E9%A1%B9%E7%9B%AE"><span class="toc-number">7.</span> <span class="toc-text">六、使用LAMP部署Web项目</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E4%B8%8B%E8%BD%BDwordpress%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F"><span class="toc-number">7.1.</span> <span class="toc-text">1、下载wordpress博客系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E8%A7%A3%E5%8E%8B"><span class="toc-number">7.2.</span> <span class="toc-text">2、解压</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95"><span class="toc-number">7.3.</span> <span class="toc-text">3、创建一个项目目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA-%E4%B8%80%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A4%9A%E4%B8%AA%E9%A1%B9%E7%9B%AE"><span class="toc-number">7.4.</span> <span class="toc-text">4、配置虚拟主机(一台服务器多个项目)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAblog%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">7.5.</span> <span class="toc-text">5、在数据库中创建一个blog数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E5%9C%A8Windows%E4%B8%AD%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0DNS"><span class="toc-number">7.6.</span> <span class="toc-text">6、在Windows中配置本地DNS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81%E4%BD%BF%E7%94%A8Google%E6%B5%8F%E8%A7%88%E5%99%A8%E6%88%96Firefox%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%89%E8%A3%85%E5%8D%9A%E5%AE%A2"><span class="toc-number">7.7.</span> <span class="toc-text">7、使用Google浏览器或Firefox浏览器安装博客</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/51833.html" title="博客搭建心得">博客搭建心得</a><time datetime="2024-01-15T02:41:40.000Z" title="发表于 2024-01-15 10:41:40">2024-01-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/16107.html" title="Hello World">Hello World</a><time datetime="2024-01-14T06:36:34.122Z" title="发表于 2024-01-14 14:36:34">2024-01-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/41553.html" title="Overlord-15">Overlord-15</a><time datetime="2024-01-11T02:48:04.000Z" title="发表于 2024-01-11 10:48:04">2024-01-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/25232.html" title="Overlord-14">Overlord-14</a><time datetime="2024-01-10T12:52:31.000Z" title="发表于 2024-01-10 20:52:31">2024-01-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/43378.html" title="型月世界五大魔法">型月世界五大魔法</a><time datetime="2024-01-10T09:58:23.000Z" title="发表于 2024-01-10 17:58:23">2024-01-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Sesa·Ananta</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="/js/tw_cn.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="19820015" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false"> </div><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-show-text.min.js" data-mobile="false" data-text="富强,民主,和谐,友爱,文明,自由,平等,公正,爱国,敬业,友善,法治" data-fontsize="15px" data-random="true" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.12.0"></script></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>

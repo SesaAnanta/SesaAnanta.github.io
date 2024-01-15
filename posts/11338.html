@@ -1,0 +1,659 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>MySQL基本SQL语句（下） | 舍沙の窝</title><meta name="author" content="Sesa·Ananta"><meta name="copyright" content="Sesa·Ananta"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MySQL基本SQL语句（下）一、扩展常见的数据类型1、回顾数据表的创建语法基本语法： 123456mysql&gt; create table 数据表名称(	字段名称1 字段类型 字段约束,	字段名称2 字段类型 字段约束,	...	primary key(主键字段 &#x3D;&gt; 不能为空、必须唯一)) engine&#x3D;innodb default charset&#x3D;utf8;   经验之谈：一般情况">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL基本SQL语句（下）">
+<meta property="og:url" content="http://sesaananta.github.io/posts/11338.html">
+<meta property="og:site_name" content="舍沙の窝">
+<meta property="og:description" content="MySQL基本SQL语句（下）一、扩展常见的数据类型1、回顾数据表的创建语法基本语法： 123456mysql&gt; create table 数据表名称(	字段名称1 字段类型 字段约束,	字段名称2 字段类型 字段约束,	...	primary key(主键字段 &#x3D;&gt; 不能为空、必须唯一)) engine&#x3D;innodb default charset&#x3D;utf8;   经验之谈：一般情况">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://sesaananta.github.io/img/%E5%A4%B4%E5%83%8F.png">
+<meta property="article:published_time" content="2023-12-23T02:00:12.000Z">
+<meta property="article:modified_time" content="2024-01-15T08:37:14.295Z">
+<meta property="article:author" content="Sesa·Ananta">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sesaananta.github.io/img/%E5%A4%B4%E5%83%8F.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://sesaananta.github.io/posts/11338.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="manifest" href="/manifest.json"/><link rel="apple-touch-icon" sizes="180x180" href="/img/siteicon/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/img/siteicon/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/img/siteicon/favicon-16x16.png"/><link rel="mask-icon" href="/img/siteicon/safari-pinned-tab.svg" color="#5bbad5"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MySQL基本SQL语句（下）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-01-15 16:37:14'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (true) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/%E5%A4%B4%E5%83%8F.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">72</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/album/"><i class="fa-fw fas fa-images"></i><span> 相册集</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 单链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/%E8%9B%87%E9%BE%99.png')"><nav id="nav"><span id="blog-info"><a href="/" title="舍沙の窝"><span class="site-name">舍沙の窝</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/album/"><i class="fa-fw fas fa-images"></i><span> 相册集</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 单链</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">MySQL基本SQL语句（下）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-12-23T02:00:12.000Z" title="发表于 2023-12-23 10:00:12">2023-12-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-01-15T08:37:14.295Z" title="更新于 2024-01-15 16:37:14">2024-01-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/linux/">linux</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/linux/mysql/">mysql</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>22分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="MySQL基本SQL语句（下）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="MySQL基本SQL语句（下）"><a href="#MySQL基本SQL语句（下）" class="headerlink" title="MySQL基本SQL语句（下）"></a>MySQL基本SQL语句（下）</h1><h1 id="一、扩展常见的数据类型"><a href="#一、扩展常见的数据类型" class="headerlink" title="一、扩展常见的数据类型"></a>一、扩展常见的数据类型</h1><h2 id="1、回顾数据表的创建语法"><a href="#1、回顾数据表的创建语法" class="headerlink" title="1、回顾数据表的创建语法"></a>1、回顾数据表的创建语法</h2><p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table 数据表名称(</span><br><span class="line">	字段名称<span class="number">1</span> 字段类型 字段约束,</span><br><span class="line">	字段名称<span class="number">2</span> 字段类型 字段约束,</span><br><span class="line">	...</span><br><span class="line">	primary key(主键字段 =&gt; 不能为空、必须唯一)</span><br><span class="line">) engine=innodb default charset=utf8;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>经验之谈：一般情况下，我们在设计数据表时，必须拥有一个id主键字段，非空、自动编号、主键约束。</p>
+</blockquote>
+<p>在创建数据表时，必须明确指定字段的名称以及字段的类型，那到底MySQL中的SQL语句支持哪些字段类型呢？</p>
+<p>答：参考下图</p>
+<p><img src="/../assets/blog_res/MySQL%E5%9F%BA%E6%9C%ACSQL%E8%AF%AD%E5%8F%A5%EF%BC%88%E4%B8%8B%EF%BC%89.assets/image-20200826094830721.png" alt="image-20200826094830721"></p>
+<h2 id="2、数值类型"><a href="#2、数值类型" class="headerlink" title="2、数值类型"></a>2、数值类型</h2><h3 id="☆-整数类型（整数、精准）"><a href="#☆-整数类型（整数、精准）" class="headerlink" title="☆ 整数类型（整数、精准）"></a>☆ 整数类型（整数、精准）</h3><p><img src="/../assets/blog_res/MySQL%E5%9F%BA%E6%9C%ACSQL%E8%AF%AD%E5%8F%A5%EF%BC%88%E4%B8%8B%EF%BC%89.assets/image-20200826095603519.png" alt="image-20200826095603519"></p>
+<p>应用场景：人的年龄、考试成绩等等相关的信息都可以使用整数类型进行存储，那整数类型有这么多形式，我应该选择哪一个呢？</p>
+<p>答：整数类型的选择主要取决于数值的范围。</p>
+<blockquote>
+<p>比如存储中国人的人口信息，可以用INT类型也可以用BIGINT类型，但是在数据库设计原则中，不是越大越好，而是正好满足条件即可。</p>
+</blockquote>
+<p>案例：设计一个数据表如tb_student学生表（id、username、age、mobile）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use 数据库名称;</span><br><span class="line">mysql&gt; create table tb_student(</span><br><span class="line">	id mediumint unsigned not null auto_increment,</span><br><span class="line">	username varchar(<span class="number">20</span>),</span><br><span class="line">	age tinyint unsigned,</span><br><span class="line">	mobile char(<span class="number">11</span>),</span><br><span class="line">	primary key(id)</span><br><span class="line">) engine=innodb default charset=utf8;</span><br></pre></td></tr></table></figure>
+
+<h3 id="☆-小数类型（浮点类型、定点类型）"><a href="#☆-小数类型（浮点类型、定点类型）" class="headerlink" title="☆ 小数类型（浮点类型、定点类型）"></a>☆ 小数类型（浮点类型、定点类型）</h3><h4 id="①-浮点类型（近似值）"><a href="#①-浮点类型（近似值）" class="headerlink" title="① 浮点类型（近似值）"></a>① 浮点类型（近似值）</h4><ul>
+<li>FLOAT和DOUBLE</li>
+</ul>
+<p><code>FLOAT</code>和<code>DOUBLE</code>类型代表近似数字数据值。MySQL对于单精度值使用四个字节，对于双精度值使用八个字节。 <code>FLOAT</code>单精度浮点数精确到约7位小数，<code>DOUBLE</code>双精度浮点数精确到大约15位小数 。<code>FLOAT</code><strong>类型会随着数值的增大精度会减小。</strong></p>
+<p>举例说明</p>
+<p>FLOAT(M,D)，其中，M表示存储的有效位数，D代表小数点后面的位数；即整数位数+小数部分不能超过M值。<br>colum1 FLOAT(7,4)<br>上面例子中，如果你插入为999.00009到cloum1列，那么mysql在存储时会四舍五入变为999.0001插入。</p>
+<blockquote>
+<p>DOUBLE(7,4) ：DOUBLE类型的使用与FLOAT类型完全一致，唯一的区别就是占用字节不同且浮点数的精度有所不同。</p>
+</blockquote>
+<h4 id="②-定点类型（精确值）"><a href="#②-定点类型（精确值）" class="headerlink" title="② 定点类型（精确值）"></a>② 定点类型（精确值）</h4><ul>
+<li>DECIMAL和NUMERIC</li>
+</ul>
+<p><code>DECIMAL</code>和<code>NUMERIC</code> 类型的存储&#x3D;&#x3D;精确的数值数据&#x3D;&#x3D;。使用这些类型时，重要的是要保留&#x3D;&#x3D;精确的精度&#x3D;&#x3D;，例如使用<strong>货币数据</strong>。在MySQL中, <code>NUMERIC</code>被作为<code>DECIMAL</code>来应用，所以下面的举例<code>DECIMAL</code>同样适用于 <code>NUMERIC</code> 。</p>
+<ul>
+<li>举例说明</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">salary DECIMAL(<span class="number">5</span>,<span class="number">2</span>)</span><br><span class="line">在上面的例子中，薪水字段的类型为decimal，表示精确的数字。其中，<span class="number">5</span>代表精度，<span class="number">2</span>代表刻度。</span><br><span class="line">精度表示数值存储的有效位数，刻度表示小数点后面可存储的位数。</span><br><span class="line">DECIMAL(<span class="number">5</span>,<span class="number">2</span>)能够存储五位数和两位小数的任何值，因此可以存储在salary 列中的值的范围<span class="literal">-999</span>.<span class="number">99</span>是 <span class="number">999.99</span></span><br><span class="line"></span><br><span class="line">特殊注意：</span><br><span class="line">DECIMAL(M)和DECIMAL(M,<span class="number">0</span>)是相等的，存储长度取决于M的值，默认情况下M值为<span class="number">10</span>.刻度为<span class="number">0</span>表示没有小数。</span><br></pre></td></tr></table></figure>
+
+<p>案例：定义一个职员表tb_staff，定义字段（id、username、salary、addtime）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use db_itheima;</span><br><span class="line">mysql&gt; create table tb_staff(</span><br><span class="line">	id smallint unsigned not null auto_increment,</span><br><span class="line">	username varchar(<span class="number">20</span>),</span><br><span class="line">	salary decimal(<span class="number">11</span>,<span class="number">2</span>),</span><br><span class="line">	addtime date,</span><br><span class="line">	primary key(id)</span><br><span class="line">) engine=innodb default charset=utf8;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、字符串类型"><a href="#3、字符串类型" class="headerlink" title="3、字符串类型"></a>3、字符串类型</h2><h3 id="☆-CHAR类型"><a href="#☆-CHAR类型" class="headerlink" title="☆ CHAR类型"></a>☆ CHAR类型</h3><p>CHAR类型的字符串为<strong>定长</strong>.长度范围是0到255之间的任何值.占用定长的存储空间,不足的部分用&#x3D;&#x3D;空格&#x3D;&#x3D;填充；读取时删掉后面的空格。</p>
+<p>password char(32)</p>
+<p>mobile char(11)</p>
+<ul>
+<li><strong>存储空间</strong></li>
+</ul>
+<p>CHAR(&#x3D;&#x3D;M&#x3D;&#x3D;)<strong>类型的存储空间和字符集有关系</strong>，一个中文在utf8字符集中占用3个bytes、gbk占用2个bytes、数字和字符统一用一个字符表示。</p>
+<ul>
+<li><strong>存储机制</strong></li>
+</ul>
+<p>在不够M长度时，MySQL在存储数据时，需要填充特殊的空格.</p>
+<ul>
+<li><strong>举例说明</strong></li>
+</ul>
+<p><code>字段名称 CHAR(M),M表示字符数</code></p>
+<p>应用场景：加密后的密码 &#x3D;&gt; char(32)，手机号码mobile(11)，身份证号码等等</p>
+<p>案例：创建一个tb_admin数据表，定义字段（id、username、password）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use db_itheima;</span><br><span class="line">mysql&gt; create table tb_admin(</span><br><span class="line">	id tinyint unsigned not null auto_increment,</span><br><span class="line">	username varchar(<span class="number">10</span>),</span><br><span class="line">	password char(<span class="number">32</span>),</span><br><span class="line">	primary key(id)</span><br><span class="line">) engine=innodb default charset=utf8;</span><br></pre></td></tr></table></figure>
+
+<h3 id="☆-VARCHAR类型"><a href="#☆-VARCHAR类型" class="headerlink" title="☆ VARCHAR类型"></a>☆ VARCHAR类型</h3><p>VARCHAR是&#x3D;&#x3D;变长存储&#x3D;&#x3D;,仅使用必要的存储空间.</p>
+<p>name varchar(10)</p>
+<ul>
+<li><strong>存储空间</strong></li>
+</ul>
+<p>VARCHAR(M)类型的存储空间和字符集有关系，一个中文在utf8字符集中占用3个bytes、gbk统一占用2个bytes、数字和字符一个字符表示。</p>
+<ul>
+<li><strong>存储机制</strong></li>
+</ul>
+<p>VARCHAR(M)字段存储实际是从<strong>第二个字节开始存储</strong>,然后用1到2个字节表示实际长度,剩下的才是可以存储数据的范围,因此最大可用存储范围是65535-3&#x3D;65532字节;</p>
+<p>第一个字节标识是否为空.（长度小于255字节,使用一个字节来表示长度;大于255字节使用两个字节来表示长度)。</p>
+<p>应用场景：主要适合存储长度不固定的字符串信息，如用户名称、产品标题、新闻标题、新闻描述（不超过255个字符）</p>
+<p>案例：创建一个tb_news数据表，定义字段（id、title、description、addtime）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use db_itheima;</span><br><span class="line">mysql&gt; create table tb_news(</span><br><span class="line">	id int not null auto_increment,</span><br><span class="line">	title varchar(<span class="number">80</span>),</span><br><span class="line">	description varchar(<span class="number">255</span>),</span><br><span class="line">	addtime date,</span><br><span class="line">	primary key(id)</span><br><span class="line">) engine=innodb default charset=utf8;</span><br></pre></td></tr></table></figure>
+
+<h3 id="☆-TEXT类型"><a href="#☆-TEXT类型" class="headerlink" title="☆ TEXT类型"></a>☆ TEXT类型</h3><p>TEXT代表文本类型的数据，当我们使用VARCHAR类型存储数据时（早期最大只能存储255个字符，MySQL5版本中，其gbk可以存储3万多个字符，utf8格式可以存储2万多个字符），如超过了VARCHAR的最大存储范围，则可以考虑使用TEXT文本类型。</p>
+<blockquote>
+<p>经验之谈：255个字符以内（包括），定长就使用CHAR类型，变长就使用VARCHAR类型，如果超过255个字符，则使用TEXT文本类型。</p>
+</blockquote>
+<p>应用场景：文本内容、产品的详细介绍等等</p>
+<p>案例：创建一个tb_goods产品表，定义字段（id、name、price、content）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use db_itheima;</span><br><span class="line">mysql&gt; create table tb_goods(</span><br><span class="line">  id int not null auto_increment,</span><br><span class="line">  name varchar(<span class="number">80</span>),</span><br><span class="line">  price decimal(<span class="number">11</span>,<span class="number">2</span>),</span><br><span class="line">  content text,</span><br><span class="line">  primary key(id)</span><br><span class="line">) engine=innodb default charset=utf8;</span><br></pre></td></tr></table></figure>
+
+<h3 id="☆-其他类型"><a href="#☆-其他类型" class="headerlink" title="☆ 其他类型"></a>☆ 其他类型</h3><p>BLOB：保存二进制的大型数据（字节串），没有字符集，eg：图片、音频视频等。</p>
+<blockquote>
+<p>实际运维工作中，很少将文件直接保存在数据库端，一般文件的存储都是基于路径进行操作的。</p>
+</blockquote>
+<p>ENUM枚举类型：多选一，从给定的多个选项中选择一个，如gender  enum(‘男’,’女’,’保密’)</p>
+<p>SET集合类型：多选多，从给定的多个选项中选个多个，如hobby set(‘吃饭’,’睡觉’,’打豆豆’)</p>
+<h2 id="4、日期时间类型"><a href="#4、日期时间类型" class="headerlink" title="4、日期时间类型"></a>4、日期时间类型</h2><p><img src="/../assets/blog_res/MySQL%E5%9F%BA%E6%9C%ACSQL%E8%AF%AD%E5%8F%A5%EF%BC%88%E4%B8%8B%EF%BC%89.assets/image-20200826114942732.png" alt="image-20200826114942732"></p>
+<blockquote>
+<p>经验之谈：时间类型的选择比较简单，主要看你需要的时间格式，是年月日、小时分钟秒等等。</p>
+</blockquote>
+<p>###㈠ DATE类型（年-月-日）</p>
+<p>The <code>DATE</code> type is used for values with a date part but no time part. MySQL retrieves and displays <code>DATE</code> values in<code>&#39;YYYY-MM-DD&#39;</code> format. The supported range is <code>&#39;1000-01-01&#39;</code> to <code>&#39;9999-12-31&#39;</code>. </p>
+<p>###㈡ DATETIME(年月日小时分钟秒)</p>
+<p>The <code>DATETIME</code> type is used for values that contain both date and time parts. MySQL retrieves and displays<code>DATETIME</code> values in <code>&#39;YYYY-MM-DD HH:MM:SS&#39;</code> format. The supported range is <code>&#39;1000-01-01 00:00:00&#39;</code> to <code>&#39;9999-12-31 23:59:59&#39;</code>. </p>
+<blockquote>
+<p>DATETIME范围相对于TIMESTAMP范围更广，<code>&#39;1000-01-01 00:00:00&#39;</code> to <code>&#39;9999-12-31 23:59:59&#39;</code></p>
+</blockquote>
+<p>###㈢ TIMESTAMP(年月日小时分钟秒)</p>
+<p>The <code>TIMESTAMP</code> data type is used for values that contain both date and time parts. <code>TIMESTAMP</code> has a range of <code>&#39;1970-01-01 00:00:01&#39;</code> UTC to <code>&#39;2038-01-19 03:14:07&#39;</code> UTC. </p>
+<blockquote>
+<p>TIMESTAMP选项如果不插入时间，则MySQL会自动调用系统时间写入数据</p>
+</blockquote>
+<p><strong>注意：</strong></p>
+<p>Invalid <code>DATE</code>, <code>DATETIME</code>, or <code>TIMESTAMP</code> values are converted to the “zero” value of the appropriate type (<code>&#39;0000-00-00&#39;</code> or <code>&#39;0000-00-00 00:00:00&#39;</code>). </p>
+<p>无效的日期，日期时间等会被替换成‘0000-00-00’或‘0000-00-00 00:00:00’</p>
+<p>###㈣ TIME（小时:分钟:秒）</p>
+<p>MySQL retrieves and displays <code>TIME</code> values in <code>&#39;HH:MM:SS&#39;</code> format (or <code>&#39;HHH:MM:SS&#39;</code> format for large hours values).<code>TIME</code> values may range from <code>&#39;-838:59:59&#39;</code> to <code>&#39;838:59:59&#39;</code>. </p>
+<p><strong>说明：</strong>小时部分可以是这么大，因为可以使用TIME类型不仅代表一个时间(必须小于24小时),而且可以表示运行时间或两个事件之间的时间间隔(可能大于24小时,甚至负数)。 </p>
+<p><strong>&#x3D;&#x3D;注意：&#x3D;&#x3D;</strong></p>
+<p>TIME这一列如果存储缩写，需要注意mysql的解释方式。<strong>无效的时间值会被转换成’00:00:00’</strong> 。</p>
+<p><code>&#39;11:12&#39;</code> means <code>&#39;11:12:00&#39;</code>, not <code>&#39;00:11:12&#39;</code>. </p>
+<p><code>&#39;12&#39;</code> and <code>12</code> are interpreted as <code>&#39;00:00:12&#39;</code>. </p>
+<p>###㈤ YEAR</p>
+<p><code>YEAR(4)</code> and <code>YEAR(2)</code> differ in display format, but have the same range of values. </p>
+<p>For 4-digit format, MySQL displays <code>YEAR</code> values in <code>YYYY</code> format, with a range of <code>1901</code> to <code>2155</code>, or <code>0000</code>. </p>
+<p>For 2-digit format, MySQL displays only the last two (least significant) digits; for example, <code>70</code> (1970 or 2070) or <code>69</code> (2069). </p>
+<p><strong>无效的值将会被转换成’0000’.</strong></p>
+<p>案例：编写tb_article文章表，定义字段（id、title、description、addtime）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use db_itheima;</span><br><span class="line">mysql&gt; create table tb_article1(</span><br><span class="line">	id int not null auto_increment,</span><br><span class="line">	title varchar(<span class="number">80</span>),</span><br><span class="line">	description varchar(<span class="number">255</span>),</span><br><span class="line">	addtime datetime,</span><br><span class="line">	primary key(id)</span><br><span class="line">) engine=innodb default charset=utf8;</span><br><span class="line"></span><br><span class="line">mysql&gt; create table tb_article2(</span><br><span class="line">	id int not null auto_increment,</span><br><span class="line">	title varchar(<span class="number">80</span>),</span><br><span class="line">	description varchar(<span class="number">255</span>),</span><br><span class="line">	addtime timestamp,</span><br><span class="line">	primary key(id)</span><br><span class="line">) engine=innodb default charset=utf8;</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into tb_article1 values (null,<span class="string">&#x27;mysql从入门到放弃&#x27;</span>,<span class="string">&#x27;mysql很好很强大...&#x27;</span>,null);</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into tb_article1 values (null,<span class="string">&#x27;mysql从入门到放弃&#x27;</span>,<span class="string">&#x27;mysql很好很强大...&#x27;</span>,null);</span><br></pre></td></tr></table></figure>
+
+<h1 id="二、SQL查询语句（重点）"><a href="#二、SQL查询语句（重点）" class="headerlink" title="二、SQL查询语句（重点）"></a>二、SQL查询语句（重点）</h1><h2 id="1、回顾SQL查询语句"><a href="#1、回顾SQL查询语句" class="headerlink" title="1、回顾SQL查询语句"></a>1、回顾SQL查询语句</h2><p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> */字段列表 from 数据表名称 <span class="built_in">where</span> 查询条件;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、SQL查询五子句"><a href="#2、SQL查询五子句" class="headerlink" title="2、SQL查询五子句"></a>2、SQL查询五子句</h2><p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> */字段列表 from 数据表名称 <span class="built_in">where</span> 子句 <span class="built_in">group</span> by 子句 having 子句 order by 子句 limit 子句;</span><br></pre></td></tr></table></figure>
+
+<p>① where子句</p>
+<p>② group by子句</p>
+<p>③ having子句</p>
+<p>④ order by子句</p>
+<p>⑤ limit子句</p>
+<blockquote>
+<p>特别注意：五子句的顺序是固定的，不能颠倒。</p>
+</blockquote>
+<h2 id="3、WHERE子句"><a href="#3、WHERE子句" class="headerlink" title="3、WHERE子句"></a>3、WHERE子句</h2><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%</td>
+<td>匹配0个或任意多个字符</td>
+</tr>
+<tr>
+<td>_(下划线)</td>
+<td>匹配单个字符</td>
+</tr>
+<tr>
+<td>like</td>
+<td>模糊匹配</td>
+</tr>
+<tr>
+<td>&#x3D;</td>
+<td>等于,精确匹配</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>&gt;&#x3D;</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>&lt;&#x3D;</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>!&#x3D;和&lt;&gt;</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>! 和 not</td>
+<td>逻辑非</td>
+</tr>
+<tr>
+<td>|| 和 or</td>
+<td>逻辑或</td>
+</tr>
+<tr>
+<td>&amp;&amp; 和 and</td>
+<td>逻辑与</td>
+</tr>
+<tr>
+<td>between…and….</td>
+<td>两者之间</td>
+</tr>
+<tr>
+<td>in (….)</td>
+<td>在…</td>
+</tr>
+<tr>
+<td>not in (….)</td>
+<td>不在</td>
+</tr>
+</tbody></table>
+<p>案例：like模糊查询语句，查询姓”关”的同学信息（name字段对应值应该以”关”开头）</p>
+<p>准备测试数据</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use db_itheima;</span><br><span class="line">mysql&gt; create table tb_student(</span><br><span class="line">	id mediumint not null auto_increment,</span><br><span class="line">	name varchar(<span class="number">20</span>),</span><br><span class="line">	age tinyint unsigned default <span class="number">0</span>,</span><br><span class="line">	gender <span class="class"><span class="keyword">enum</span>(&#x27;男&#x27;,&#x27;女&#x27;),</span></span><br><span class="line"><span class="class">	<span class="title">address</span> <span class="title">varchar</span>(255),</span></span><br><span class="line"><span class="class">	<span class="title">primary</span> <span class="title">key</span>(<span class="title">id</span>)</span></span><br><span class="line"><span class="class">) <span class="title">engine</span>=<span class="title">innodb</span> <span class="title">default</span> <span class="title">charset</span>=<span class="title">utf8</span>;</span></span><br><span class="line"><span class="class">插入测试数据</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;刘备&#x27;,33,&#x27;男&#x27;,&#x27;湖北省武汉市&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;貂蝉&#x27;,18,&#x27;女&#x27;,&#x27;湖南省长沙市&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;关羽&#x27;,32,&#x27;男&#x27;,&#x27;湖北省荆州市&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;大乔&#x27;,20,&#x27;女&#x27;,&#x27;河南省漯河市&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;赵云&#x27;,25,&#x27;男&#x27;,&#x27;河北省石家庄市&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;小乔&#x27;,18,&#x27;女&#x27;,&#x27;湖北省荆州市&#x27;);</span></span><br></pre></td></tr></table></figure>
+
+<p>使用like模糊查询，获取姓”关”的同学信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> name like <span class="string">&#x27;关%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>like模糊查询，有点类似于管道命令的中的数据检索。有两个关键字：%百分号与_下划线，%百分号代表任意个任意字符，_下划线代表任意的某个字符（只能匹配1个）</p>
+</blockquote>
+<p>案例：like模糊查询语句，查询名字中带”蝉”字的同学信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> name like <span class="string">&#x27;%蝉%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>案例：like模糊查询语句，查询云字结尾且名字为两个字的同学信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> name like <span class="string">&#x27;_云&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>案例：获取学生表中，id编号为3的同学信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> id=<span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+
+<p>案例：获取年龄大于25周岁的同学信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> age&gt;<span class="number">25</span>;</span><br></pre></td></tr></table></figure>
+
+<p>案例：获取学生表中，性别不为男的同学信息（获取女同学的信息）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> gender&lt;&gt;<span class="string">&#x27;男&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>案例：获取班级中年龄大于30岁的男同学信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> age&gt;<span class="number">30</span> &amp;&amp; gender=<span class="string">&#x27;男&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>案例：获取id值为1、3、5的同学信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> id=<span class="number">1</span> or id=<span class="number">3</span> or id=<span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+
+<p>案例：获取年龄在18周岁~25周岁之间的同学信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> age&gt;=<span class="number">18</span> and age&lt;=<span class="number">25</span>;</span><br><span class="line">或</span><br><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> age between <span class="number">18</span> and <span class="number">25</span>;</span><br></pre></td></tr></table></figure>
+
+<p>案例：获取id值为2、4、6的同学信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student <span class="built_in">where</span> id <span class="keyword">in</span> (<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、DISTINCT数据去重"><a href="#4、DISTINCT数据去重" class="headerlink" title="4、DISTINCT数据去重"></a>4、DISTINCT数据去重</h2><p>案例：获取tb_student学生表学员年龄的分布情况。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> distinct age from tb_student;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、GROUP-BY子句-重点和难点"><a href="#5、GROUP-BY子句-重点和难点" class="headerlink" title="5、GROUP BY子句(重点和难点)"></a>5、GROUP BY子句(重点和难点)</h2><p>group by子句的作用：对数据进行分组操作，为什么要进行分组呢？分组的目标就是进行分组统计。</p>
+<blockquote>
+<p>日常生活中的分组太多了，如按男女进行分组，按成绩进行分组，按院校、系部分组，按部门进行分组。</p>
+</blockquote>
+<p>根据给定&#x3D;&#x3D;数据列&#x3D;&#x3D;的查询结果进行分组统计，最终得到一个&#x3D;&#x3D;分组汇总表&#x3D;&#x3D;</p>
+<p>注：一般情况下group by需与&#x3D;&#x3D;统计函数&#x3D;&#x3D;一起使用才有意义</p>
+<h3 id="☆-统计函数"><a href="#☆-统计函数" class="headerlink" title="☆ 统计函数"></a>☆ 统计函数</h3><table>
+<thead>
+<tr>
+<th>常见统计函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>max</td>
+<td>求最大值</td>
+</tr>
+<tr>
+<td>min</td>
+<td>求最小值</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>求和</td>
+</tr>
+<tr>
+<td>avg</td>
+<td>求平均值</td>
+</tr>
+<tr>
+<td>count</td>
+<td>求总行数</td>
+</tr>
+</tbody></table>
+<p>案例：求tb_student表中一共有多少个记录</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> count(*) from tb_student;</span><br></pre></td></tr></table></figure>
+
+<p>案例：求年龄的最大值与最小值</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> max(age) from tb_student;</span><br><span class="line">与</span><br><span class="line">mysql&gt; <span class="built_in">select</span> min(age) from tb_student;</span><br></pre></td></tr></table></figure>
+
+<p>案例：针对id字段求和</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> sum(id) from tb_student;</span><br></pre></td></tr></table></figure>
+
+<p>案例：求学员表中年龄的平均值</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> avg(age) from tb_student;</span><br></pre></td></tr></table></figure>
+
+<h3 id="☆-GROUP-BY分组"><a href="#☆-GROUP-BY分组" class="headerlink" title="☆ GROUP BY分组"></a>☆ GROUP BY分组</h3><p>案例：求tb_student表中，男同学的总数量与女同学的总数量</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> gender,count(*) from tb_student <span class="built_in">group</span> by gender;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在MySQL5.7以后版本中，分组字段必须出现在select后面的查询字段中</p>
+</blockquote>
+<p>案例：求tb_student表中，男同学年龄的最大值与女同学年龄的最大值</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> gender,max(age) from tb_student <span class="built_in">group</span> by gender;</span><br></pre></td></tr></table></figure>
+
+<h3 id="☆-GROUP-BY分组原理"><a href="#☆-GROUP-BY分组原理" class="headerlink" title="☆ GROUP BY分组原理"></a>☆ GROUP BY分组原理</h3><p><img src="/../assets/blog_res/MySQL%E5%9F%BA%E6%9C%ACSQL%E8%AF%AD%E5%8F%A5%EF%BC%88%E4%B8%8B%EF%BC%89.assets/image-20200826161519999.png" alt="image-20200826161519999"></p>
+<blockquote>
+<p>记住：以后只要涉及到求每个学科、每个部分、每个年级、每个系部薪资最高、成绩最好、薪资的平均值等等，就是基于GROUP BY + 统计函数。</p>
+</blockquote>
+<h2 id="6、HAVING子句"><a href="#6、HAVING子句" class="headerlink" title="6、HAVING子句"></a>6、HAVING子句</h2><ul>
+<li><p>having与where类似，根据条件对&#x3D;&#x3D;数据&#x3D;&#x3D;进行过滤筛选</p>
+</li>
+<li><p>where&#x3D;&#x3D;针对表中的列&#x3D;&#x3D;发挥作用，查询数据</p>
+</li>
+<li><p>having&#x3D;&#x3D;针对查询结果集&#x3D;&#x3D;发挥作用，筛选数据</p>
+</li>
+</ul>
+<p>案例：having在做简单查询时可以替代where子句</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student having age&gt;<span class="number">20</span>;</span><br></pre></td></tr></table></figure>
+
+<p>案例：按学科进行分组，求每个学科拥有多少人</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table tb_student(</span><br><span class="line">	id mediumint not null auto_increment,</span><br><span class="line">	name varchar(<span class="number">20</span>),</span><br><span class="line">	age tinyint unsigned default <span class="number">0</span>,</span><br><span class="line">	gender <span class="class"><span class="keyword">enum</span>(&#x27;男&#x27;,&#x27;女&#x27;),</span></span><br><span class="line"><span class="class">	<span class="title">subject</span> <span class="title">enum</span>(&#x27;<span class="title">ui</span>&#x27;,&#x27;<span class="title">java</span>&#x27;,&#x27;<span class="title">yunwei</span>&#x27;,&#x27;<span class="title">python</span>&#x27;),</span></span><br><span class="line"><span class="class">	<span class="title">primary</span> <span class="title">key</span>(<span class="title">id</span>)</span></span><br><span class="line"><span class="class">) <span class="title">engine</span>=<span class="title">innodb</span> <span class="title">default</span> <span class="title">charset</span>=<span class="title">utf8</span>;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;悟空&#x27;,255,&#x27;男&#x27;,&#x27;<span class="title">ui</span>&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;八戒&#x27;,250,&#x27;男&#x27;,&#x27;<span class="title">python</span>&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;唐僧&#x27;,30,&#x27;男&#x27;,&#x27;<span class="title">yunwei</span>&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;沙僧&#x27;,150,&#x27;男&#x27;,&#x27;<span class="title">java</span>&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;小白龙&#x27;,100,&#x27;男&#x27;,&#x27;<span class="title">yunwei</span>&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;白骨精&#x27;,28,&#x27;女&#x27;,&#x27;<span class="title">ui</span>&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;兔子精&#x27;,22,&#x27;女&#x27;,&#x27;<span class="title">yunwei</span>&#x27;);</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;狮子精&#x27;,33,&#x27;男&#x27;,&#x27;<span class="title">yunwei</span>&#x27;);</span></span><br><span class="line"><span class="class">或</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student</span> <span class="title">values</span> (<span class="title">null</span>,&#x27;悟空&#x27;,255,&#x27;男&#x27;,&#x27;<span class="title">ui</span>&#x27;),(<span class="title">null</span>,&#x27;八戒&#x27;,250,&#x27;男&#x27;,&#x27;<span class="title">python</span>&#x27;),(<span class="title">null</span>,&#x27;唐僧&#x27;,30,&#x27;男&#x27;,&#x27;<span class="title">yunwei</span>&#x27;),(<span class="title">null</span>,&#x27;沙僧&#x27;,150,&#x27;男&#x27;,&#x27;<span class="title">java</span>&#x27;),(<span class="title">null</span>,&#x27;小白龙&#x27;,100,&#x27;男&#x27;,&#x27;<span class="title">yunwei</span>&#x27;),(<span class="title">null</span>,&#x27;白骨精&#x27;,28,&#x27;女&#x27;,&#x27;<span class="title">ui</span>&#x27;),(<span class="title">null</span>,&#x27;兔子精&#x27;,22,&#x27;女&#x27;,&#x27;<span class="title">yunwei</span>&#x27;),(<span class="title">null</span>,&#x27;狮子精&#x27;,33,&#x27;男&#x27;,&#x27;<span class="title">yunwei</span>&#x27;);</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> subject,count(*) from tb_student <span class="built_in">group</span> by subject;</span><br></pre></td></tr></table></figure>
+
+<p>案例：求每个学科中，学科人数大于3人的学科信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> subject,count(*) from tb_student <span class="built_in">group</span> by subject having count(*)&gt;<span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="7、ORDER-BY子句"><a href="#7、ORDER-BY子句" class="headerlink" title="7、ORDER BY子句"></a>7、ORDER BY子句</h2><p>主要作用的就是对数据进行排序（升序、降序）</p>
+<p>升序：从小到大，1,2,3,4,5</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from 数据表名称 ... order by 字段名称 asc;</span><br></pre></td></tr></table></figure>
+
+<p>降序：从大到小，5,4,3,2,1</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from 数据表名称 ... order by 字段名称 desc;</span><br></pre></td></tr></table></figure>
+
+<p>案例：按年龄进行排序（由大到小）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student order by age desc;</span><br></pre></td></tr></table></figure>
+
+<h2 id="8、LIMIT子句"><a href="#8、LIMIT子句" class="headerlink" title="8、LIMIT子句"></a>8、LIMIT子句</h2><p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from 数据表名称 ... limit number; 查询满足条件的number条数据</span><br><span class="line">或</span><br><span class="line">mysql&gt; <span class="built_in">select</span> * from 数据表名称 ... limit offset,number; 从偏移量为offset开始查询，查询number条记录</span><br><span class="line">offset的值从<span class="number">0</span>开始</span><br></pre></td></tr></table></figure>
+
+<p>offset偏移量：</p>
+<p><img src="/../assets/blog_res/MySQL%E5%9F%BA%E6%9C%ACSQL%E8%AF%AD%E5%8F%A5%EF%BC%88%E4%B8%8B%EF%BC%89.assets/image-20200826170515365.png" alt="image-20200826170515365"></p>
+<p>案例：获取学生表中，年龄最大的学员信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student order by age desc limit <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>案例：从偏移量为1的元素开始查询，查询2条记录</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student limit <span class="number">1</span>,<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>LIMIT子句在开发项目中，主要应用于数据分页。</p>
+</blockquote>
+<p>案例：实现数据分页（参考上图）</p>
+<p>第一页：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student limit <span class="number">0</span>,<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>第二页：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student limit <span class="number">2</span>,<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<h1 id="三、SQL多表查询（了解）"><a href="#三、SQL多表查询（了解）" class="headerlink" title="三、SQL多表查询（了解）"></a>三、SQL多表查询（了解）</h1><h2 id="1、什么是多表查询"><a href="#1、什么是多表查询" class="headerlink" title="1、什么是多表查询"></a>1、什么是多表查询</h2><p>我们刚才学习的SQL五子句都主要是针对单表情况，我们在实际工作中，也可能会接触到一些复杂的多表查询。</p>
+<h2 id="2、UNION联合查询"><a href="#2、UNION联合查询" class="headerlink" title="2、UNION联合查询"></a>2、UNION联合查询</h2><p>UNION联合查询的作用：把多个表中的数据联合在一起进行显示。应用场景：分库分表</p>
+<p>第一步：创建两个结构相同的学生表tb_student1与tb_student2</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table tb_student1(</span><br><span class="line">	id mediumint not null auto_increment,</span><br><span class="line">	name varchar(<span class="number">20</span>),</span><br><span class="line">	age tinyint unsigned default <span class="number">0</span>,</span><br><span class="line">	gender <span class="class"><span class="keyword">enum</span>(&#x27;男&#x27;,&#x27;女&#x27;),</span></span><br><span class="line"><span class="class">	<span class="title">subject</span> <span class="title">enum</span>(&#x27;<span class="title">ui</span>&#x27;,&#x27;<span class="title">java</span>&#x27;,&#x27;<span class="title">yunwei</span>&#x27;,&#x27;<span class="title">python</span>&#x27;),</span></span><br><span class="line"><span class="class">	<span class="title">primary</span> <span class="title">key</span>(<span class="title">id</span>)</span></span><br><span class="line"><span class="class">) <span class="title">engine</span>=<span class="title">innodb</span> <span class="title">default</span> <span class="title">charset</span>=<span class="title">utf8</span>;</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student1</span> <span class="title">values</span> (1,&#x27;悟空&#x27;,255,&#x27;男&#x27;,&#x27;<span class="title">ui</span>&#x27;);</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">create</span> <span class="title">table</span> <span class="title">tb_student2</span>(</span></span><br><span class="line"><span class="class">	<span class="title">id</span> <span class="title">mediumint</span> <span class="title">not</span> <span class="title">null</span> <span class="title">auto_increment</span>,</span></span><br><span class="line"><span class="class">	<span class="title">name</span> <span class="title">varchar</span>(20),</span></span><br><span class="line"><span class="class">	<span class="title">age</span> <span class="title">tinyint</span> <span class="title">unsigned</span> <span class="title">default</span> 0,</span></span><br><span class="line"><span class="class">	<span class="title">gender</span> <span class="title">enum</span>(&#x27;男&#x27;,&#x27;女&#x27;),</span></span><br><span class="line"><span class="class">	<span class="title">subject</span> <span class="title">enum</span>(&#x27;<span class="title">ui</span>&#x27;,&#x27;<span class="title">java</span>&#x27;,&#x27;<span class="title">yunwei</span>&#x27;,&#x27;<span class="title">python</span>&#x27;),</span></span><br><span class="line"><span class="class">	<span class="title">primary</span> <span class="title">key</span>(<span class="title">id</span>)</span></span><br><span class="line"><span class="class">) <span class="title">engine</span>=<span class="title">innodb</span> <span class="title">default</span> <span class="title">charset</span>=<span class="title">utf8</span>;</span></span><br><span class="line"><span class="class"><span class="title">mysql</span>&gt; <span class="title">insert</span> <span class="title">into</span> <span class="title">tb_student2</span> <span class="title">values</span> (2,&#x27;唐僧&#x27;,30,&#x27;男&#x27;,&#x27;<span class="title">yunwei</span>&#x27;);</span></span><br></pre></td></tr></table></figure>
+
+<p>第二步：使用UNION进行联合查询</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_student1 union <span class="built_in">select</span> * from tb_student2;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、交叉查询（了解）"><a href="#3、交叉查询（了解）" class="headerlink" title="3、交叉查询（了解）"></a>3、交叉查询（了解）</h2><p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> */字段列表 from 数据表<span class="number">1</span>,数据表<span class="number">2</span>;</span><br><span class="line">或</span><br><span class="line">mysql&gt; <span class="built_in">select</span> */字段列表 from 数据表<span class="number">1</span> cross join 数据表<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p>字段总数 &#x3D; 数据表1的字段 + 数据表2的字段</p>
+<p>总记录数 &#x3D; 数据表1的记录数 * 数据表2的记录数 &#x3D;&gt; (笛卡尔积)</p>
+<p>准备两张数据表：产品分类表 与 产品的信息表</p>
+<p>tb_category</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table tb_category(</span><br><span class="line">	id smallint not null auto_increment,</span><br><span class="line">	name varchar(<span class="number">20</span>),</span><br><span class="line">	pid smallint default <span class="number">0</span>,</span><br><span class="line">	primary key(id)</span><br><span class="line">) engine=innodb default charset=utf8;</span><br><span class="line"></span><br><span class="line">insert into tb_category values (null,<span class="string">&#x27;手机&#x27;</span>,<span class="number">0</span>);		=&gt;  id=<span class="number">1</span></span><br><span class="line">insert into tb_cateogry values (null,<span class="string">&#x27;电脑&#x27;</span>,<span class="number">0</span>);		=&gt;  id=<span class="number">2</span></span><br><span class="line">insert into tb_category values (null,<span class="string">&#x27;游戏手机&#x27;</span>,<span class="number">1</span>);	   =&gt;  游戏手机属于手机分类</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>pid代表所属的父级类别，如果自己就是顶级分类，则为0</p>
+</blockquote>
+<p>tb_goods</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table tb_goods(</span><br><span class="line">	id int not null auto_increment,</span><br><span class="line">	title varchar(<span class="number">80</span>),</span><br><span class="line">	price decimal(<span class="number">11</span>,<span class="number">2</span>),</span><br><span class="line">	cid smallint default <span class="number">0</span>,</span><br><span class="line">	primary key(id)</span><br><span class="line">) engine=innodb default charset=utf8;</span><br><span class="line"></span><br><span class="line">insert into tb_goods values (null,<span class="string">&#x27;IPhone 11&#x27;</span>,<span class="number">5699.00</span>,<span class="number">1</span>);</span><br><span class="line">insert into tb_goods values (null,<span class="string">&#x27;MI 10&#x27;</span>,<span class="number">4699.00</span>,<span class="number">1</span>);</span><br><span class="line">insert into tb_goods values (null,<span class="string">&#x27;ThinkPad X1&#x27;</span>,<span class="number">9999.00</span>,<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">insert into tb_goods values (null,<span class="string">&#x27;Nike air&#x27;</span>,<span class="number">999.00</span>,<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>cid代表产品的所属分类编号，与tb_category表要一一对应</p>
+</blockquote>
+<p>案例：把分类表与产品表进行交叉，求结果</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> * from tb_category cross join tb_goods;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../assets/blog_res/MySQL%E5%9F%BA%E6%9C%ACSQL%E8%AF%AD%E5%8F%A5%EF%BC%88%E4%B8%8B%EF%BC%89.assets/image-20200826174322790.png" alt="image-20200826174322790"></p>
+<blockquote>
+<p>交叉连接本身是没有意义的，其只是强制把两个表甚至多个表进行连接在一起。但是交叉查询中也有正确的结果，所以我们所谓的多表连接只需要在交叉连接的基础上增加一个连接条件，则就是我们想要的结果了。所以交叉查询是多表查询的基础。</p>
+</blockquote>
+<h2 id="4、内连接查询（重点）"><a href="#4、内连接查询（重点）" class="headerlink" title="4、内连接查询（重点）"></a>4、内连接查询（重点）</h2><p>基本语法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> 数据表<span class="number">1</span>.字段列表,数据表<span class="number">2</span>.字段列表 from 数据表<span class="number">1</span> inner join 数据表<span class="number">2</span> on 连接条件;</span><br></pre></td></tr></table></figure>
+
+<p>案例：获取产品表中每个产品的分类信息</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> tb_goods.*,tb_category.name from tb_goods inner join tb_category on tb_goods.cid=tb_category.id;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>内连接查询：把两个表甚至多个表进行连接，然后拿表1中的每一条记录与表2中的每一条记录进行匹配，如果有与之对应的结果，则显示。反之，则忽略这条记录。</p>
+</blockquote>
+<h2 id="5、外连接查询（重点）"><a href="#5、外连接查询（重点）" class="headerlink" title="5、外连接查询（重点）"></a>5、外连接查询（重点）</h2><p>内连接查询要求：表1和表2中的每一条记录必须要一一对应，如果无法匹配，则这条记录会被自动被忽略掉，那如果我需要保留表1中的所有记录或表2中的所有记录怎么办呢？</p>
+<p>答：使用外连接查询</p>
+<p>基本语法：</p>
+<p>左外连接查询：把左表中的每一条数据都保留，右表匹配到结果就显示，匹配不到就NULL</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">select</span> 数据表<span class="number">1</span>.字段列表,数据表<span class="number">2</span>.字段列表 from 数据表<span class="number">1</span> left join 数据表<span class="number">2</span> on 连接条件;</span><br></pre></td></tr></table></figure>
+
+<p>右外连接查询：把右表中的每一条数据都保留，左表匹配到结果就显示，匹配不到就NULL</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">select</span> 数据表<span class="number">1</span>.字段列表,数据表<span class="number">2</span>.字段列表 from 数据表<span class="number">1</span> right join 数据表<span class="number">2</span> on 连接条件;</span><br></pre></td></tr></table></figure>
+
+<p>案例：获取产品表中每个产品的分类信息（无论匹配到与否）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> tb_goods.*,tb_category.name from tb_goods left join tb_category on tb_goods.cid=tb_category.id;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6、别名机制：简化内外连接"><a href="#6、别名机制：简化内外连接" class="headerlink" title="6、别名机制：简化内外连接"></a>6、别名机制：简化内外连接</h2><p>案例：获取产品表中每个产品的分类信息（无论匹配到与否）</p>
+<p>原始语句：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">select</span> tb_goods.*,tb_category.name from tb_goods left join tb_category on tb_goods.cid=tb_category.id;</span><br></pre></td></tr></table></figure>
+
+<p>给数据表起个简单的名字，如tb_category叫c，tb_goods叫g</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">① mysql&gt; <span class="built_in">select</span> * from tb_goods left join tb_category;</span><br><span class="line">起别名</span><br><span class="line">② mysql&gt; <span class="built_in">select</span> * from tb_goods g left join tb_category c;</span><br><span class="line">写on条件</span><br><span class="line">③ mysql&gt; <span class="built_in">select</span> * from tb_goods g left join tb_category c on g.cid=c.id;</span><br><span class="line">筛选字段</span><br><span class="line">④ mysql&gt; <span class="built_in">select</span> g.*,c.name from tb_goods g left join tb_category c on g.cid=c.id;</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://sesaananta.github.io">Sesa·Ananta</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://sesaananta.github.io/posts/11338.html">http://sesaananta.github.io/posts/11338.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sesaananta.github.io" target="_blank">舍沙の窝</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/linux/">linux</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0/">学习</a><a class="post-meta__tags" href="/tags/mysql/">mysql</a></div><div class="post_share"><div class="social-share" data-image="/img/%E5%A4%B4%E5%83%8F.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/53323.html" title="MySQL基本SQL语句（上）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">MySQL基本SQL语句（上）</div></div></a></div><div class="next-post pull-right"><a href="/posts/60335.html" title="LAMP项目部署实战"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">LAMP项目部署实战</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/13613.html" title="MySQL主从复制架构"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">MySQL主从复制架构</div></div></a></div><div><a href="/posts/30031.html" title="MySQL介绍及安装"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">MySQL介绍及安装</div></div></a></div><div><a href="/posts/53323.html" title="MySQL基本SQL语句（上）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">MySQL基本SQL语句（上）</div></div></a></div><div><a href="/posts/7105.html" title="MySQL备份与恢复"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">MySQL备份与恢复</div></div></a></div><div><a href="/posts/139.html" title="MySQL备份与恢复（重点）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">MySQL备份与恢复（重点）</div></div></a></div><div><a href="/posts/16175.html" title="半同步复制与MHA高可用架构设计"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-23</div><div class="title">半同步复制与MHA高可用架构设计</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/%E5%A4%B4%E5%83%8F.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sesa·Ananta</div><div class="author-info__description">一介愚人，但求无悔</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">72</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/SesaAnanta/SesaAnanta.github.io"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SesaAnanta/SesaAnanta.github.io" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://space.bilibili.com/7820821" target="_blank" title="BiliBili"><i class="fab fa-bilibili" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1874121517@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到一介愚人、网络乞丐、无业游民、扑街写手的个人博客，此处记录闲言碎语，断章同人，学习笔记以及一些无用的努力</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E5%9F%BA%E6%9C%ACSQL%E8%AF%AD%E5%8F%A5%EF%BC%88%E4%B8%8B%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">MySQL基本SQL语句（下）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%89%A9%E5%B1%95%E5%B8%B8%E8%A7%81%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">一、扩展常见的数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%9B%9E%E9%A1%BE%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E5%88%9B%E5%BB%BA%E8%AF%AD%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">1、回顾数据表的创建语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.2.</span> <span class="toc-text">2、数值类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B%EF%BC%88%E6%95%B4%E6%95%B0%E3%80%81%E7%B2%BE%E5%87%86%EF%BC%89"><span class="toc-number">2.2.1.</span> <span class="toc-text">☆ 整数类型（整数、精准）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-%E5%B0%8F%E6%95%B0%E7%B1%BB%E5%9E%8B%EF%BC%88%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B%E3%80%81%E5%AE%9A%E7%82%B9%E7%B1%BB%E5%9E%8B%EF%BC%89"><span class="toc-number">2.2.2.</span> <span class="toc-text">☆ 小数类型（浮点类型、定点类型）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A0-%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B%EF%BC%88%E8%BF%91%E4%BC%BC%E5%80%BC%EF%BC%89"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">① 浮点类型（近似值）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A1-%E5%AE%9A%E7%82%B9%E7%B1%BB%E5%9E%8B%EF%BC%88%E7%B2%BE%E7%A1%AE%E5%80%BC%EF%BC%89"><span class="toc-number">2.2.2.2.</span> <span class="toc-text">② 定点类型（精确值）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.3.</span> <span class="toc-text">3、字符串类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-CHAR%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.3.1.</span> <span class="toc-text">☆ CHAR类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-VARCHAR%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.3.2.</span> <span class="toc-text">☆ VARCHAR类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-TEXT%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.3.3.</span> <span class="toc-text">☆ TEXT类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-%E5%85%B6%E4%BB%96%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.3.4.</span> <span class="toc-text">☆ 其他类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.4.</span> <span class="toc-text">4、日期时间类型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81SQL%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">二、SQL查询语句（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%9B%9E%E9%A1%BESQL%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5"><span class="toc-number">3.1.</span> <span class="toc-text">1、回顾SQL查询语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81SQL%E6%9F%A5%E8%AF%A2%E4%BA%94%E5%AD%90%E5%8F%A5"><span class="toc-number">3.2.</span> <span class="toc-text">2、SQL查询五子句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81WHERE%E5%AD%90%E5%8F%A5"><span class="toc-number">3.3.</span> <span class="toc-text">3、WHERE子句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81DISTINCT%E6%95%B0%E6%8D%AE%E5%8E%BB%E9%87%8D"><span class="toc-number">3.4.</span> <span class="toc-text">4、DISTINCT数据去重</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81GROUP-BY%E5%AD%90%E5%8F%A5-%E9%87%8D%E7%82%B9%E5%92%8C%E9%9A%BE%E7%82%B9"><span class="toc-number">3.5.</span> <span class="toc-text">5、GROUP BY子句(重点和难点)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-%E7%BB%9F%E8%AE%A1%E5%87%BD%E6%95%B0"><span class="toc-number">3.5.1.</span> <span class="toc-text">☆ 统计函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-GROUP-BY%E5%88%86%E7%BB%84"><span class="toc-number">3.5.2.</span> <span class="toc-text">☆ GROUP BY分组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%98%86-GROUP-BY%E5%88%86%E7%BB%84%E5%8E%9F%E7%90%86"><span class="toc-number">3.5.3.</span> <span class="toc-text">☆ GROUP BY分组原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81HAVING%E5%AD%90%E5%8F%A5"><span class="toc-number">3.6.</span> <span class="toc-text">6、HAVING子句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81ORDER-BY%E5%AD%90%E5%8F%A5"><span class="toc-number">3.7.</span> <span class="toc-text">7、ORDER BY子句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E3%80%81LIMIT%E5%AD%90%E5%8F%A5"><span class="toc-number">3.8.</span> <span class="toc-text">8、LIMIT子句</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81SQL%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%EF%BC%88%E4%BA%86%E8%A7%A3%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">三、SQL多表查询（了解）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.1.</span> <span class="toc-text">1、什么是多表查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81UNION%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.2.</span> <span class="toc-text">2、UNION联合查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E4%BA%A4%E5%8F%89%E6%9F%A5%E8%AF%A2%EF%BC%88%E4%BA%86%E8%A7%A3%EF%BC%89"><span class="toc-number">4.3.</span> <span class="toc-text">3、交叉查询（了解）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E5%86%85%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">4.4.</span> <span class="toc-text">4、内连接查询（重点）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E5%A4%96%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">4.5.</span> <span class="toc-text">5、外连接查询（重点）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E5%88%AB%E5%90%8D%E6%9C%BA%E5%88%B6%EF%BC%9A%E7%AE%80%E5%8C%96%E5%86%85%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="toc-number">4.6.</span> <span class="toc-text">6、别名机制：简化内外连接</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/51833.html" title="博客搭建心得">博客搭建心得</a><time datetime="2024-01-15T02:41:40.000Z" title="发表于 2024-01-15 10:41:40">2024-01-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/16107.html" title="Hello World">Hello World</a><time datetime="2024-01-14T06:36:34.122Z" title="发表于 2024-01-14 14:36:34">2024-01-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/41553.html" title="Overlord-15">Overlord-15</a><time datetime="2024-01-11T02:48:04.000Z" title="发表于 2024-01-11 10:48:04">2024-01-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/25232.html" title="Overlord-14">Overlord-14</a><time datetime="2024-01-10T12:52:31.000Z" title="发表于 2024-01-10 20:52:31">2024-01-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/43378.html" title="型月世界五大魔法">型月世界五大魔法</a><time datetime="2024-01-10T09:58:23.000Z" title="发表于 2024-01-10 17:58:23">2024-01-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Sesa·Ananta</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a target="_blank" rel="noopener" href="https://butterfly.js.org/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="/js/tw_cn.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="19820015" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false"> </div><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-show-text.min.js" data-mobile="false" data-text="富强,民主,和谐,友爱,文明,自由,平等,公正,爱国,敬业,友善,法治" data-fontsize="15px" data-random="true" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.12.0"></script></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
